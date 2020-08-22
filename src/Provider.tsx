@@ -40,8 +40,8 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
         const { areas } = this.state;
 
         const dirtyAreas = (await Promise.all(Object.values(areas)
-            .map((area) => area.validate()
-        ))).filter((clean) => !clean);
+            .map((area) => area.validate())
+        )).filter((clean) => !clean);
 
         if (!dirtyAreas.length && onValidated) {
             onValidated();
