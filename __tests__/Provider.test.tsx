@@ -106,4 +106,26 @@ describe('test Provider', () => {
         await tick();
         expect(mockFn).toHaveBeenCalled()
     })
+
+
+    it('should just validate when not rules prop is given', async () => {
+        const mockFn = jest.fn();
+
+        const provider = mount<ValidatorProvider, ValidatorProviderProps>(
+            <ValidatorProvider>
+                {({ validate }) => (
+                    <>
+                        <ValidatorArea name="test1">
+                            <input value="" />
+                        </ValidatorArea>
+                        <button onClick={() => validate(mockFn)} />
+                    </>
+                )}
+            </ValidatorProvider>
+        );
+
+        provider.find('button').simulate('click');
+        await tick();
+        expect(mockFn).toHaveBeenCalled()
+    })
 })

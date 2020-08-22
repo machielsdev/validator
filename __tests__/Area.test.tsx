@@ -113,4 +113,17 @@ describe('test Provider', () => {
         area.find('input').simulate('blur');
         expect(area.find('div').text()).toBe('string rule passed');
     })
+
+    it('should call element\'s provided blur along validator blur', () => {
+        const mockFn = jest.fn();
+
+        const area = mount<ValidatorArea, ValidatorAreaProps>(
+            <ValidatorArea rules={[required]}>
+                <input name="test" onBlur={mockFn} />
+            </ValidatorArea>
+        );
+
+        area.find('input').simulate('blur');
+        expect(mockFn).toBeCalled();
+    });
 })
