@@ -1,3 +1,3 @@
 import { Rule } from './Rule';
 
-export type RuleOptions = Rule[];
+export type RuleOptions = Rule[] | string[];

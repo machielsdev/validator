@@ -35,38 +35,44 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         rules: []
     }
 
-    public validate(ref?: ValidationElement): boolean {
-        this.dirty = false;
-        this.setState(() => ({
-            errors: []
-        }), () => {
-            const refs = ref ? [ref] : this.inputRefs;
-            const { rules: propRules = [] } = this.props;
-            const { rules: contextRules } = this.context;
-            const rules = [...propRules, ...contextRules];
-            const messages: string[] = [];
+    public validate(ref?: ValidationElement): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            this.dirty = false;
+            this.setState(() => ({
+                errors: []
+            }), () => {
+                const refs = ref ? [ref] : this.inputRefs;
+                const { rules: propRules = [] } = this.props;
+                const { rules: contextRules } = this.context;
+                const rules = [...propRules, ...contextRules];
+                const messages: string[] = [];
 
-            for (let i = 0; i < rules.length; i++) {
-                let rule = rules[i];
+                for (let i = 0; i < rules.length; i++) {
+                    let rule = rules[i];
 
-                if (typeof rule === 'string' && Validator.hasRule(rule)) {
-                    rule = Validator.rules[rule];
+                    if (typeof rule === 'string' && Validator.hasRule(rule)) {
+                        rule = Validator.rules[rule];
+                    }
+
+                    if (typeof rule !== 'string') {
+                        if (!rule.passed(refs)) {
+                            messages.push(rule.message(refs));
+                            this.dirty = true;
+                        }
+                    }
                 }
 
-                if (!rule.passed(refs)) {
-                    messages.push(rule.message(refs));
-                    this.dirty = true;
+                if (this.dirty) {
+                    this.setState(() => ({
+                        errors: messages
+                    }), () => {
+                        resolve(false);
+                    });
+                } else {
+                    resolve(true);
                 }
-            }
-
-            if (this.dirty) {
-                this.setState(() => ({
-                    errors: messages
-                }));
-            }
-        });
-
-        return this.dirty;
+            });
+        })
     }
 
     public componentDidMount(): void {
@@ -76,7 +82,7 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
     }
 
     private getName(): string {
-        if (this.inputRefs.length === 1) {
+        if (this.inputRefs.length === 1 && this.inputRefs[0].getAttribute('name')) {
             return this.inputRefs[0].getAttribute('name') as string;
         }
 

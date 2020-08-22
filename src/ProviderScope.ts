@@ -1,3 +1,3 @@
 export interface ProviderScope {
-    validate: (onValidated?: () => void) => void;
+    validate: (onValidated?: () => void) => Promise<void>;
 }

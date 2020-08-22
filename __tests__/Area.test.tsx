@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { ValidatorArea } from '../src';
+import { ValidatorArea, Validator } from '../src';
 import { ValidatorAreaProps } from '../src/ValidatorArea';
 import required from '../src/rules/required';
 
@@ -8,7 +8,7 @@ describe('test Provider', () => {
     it('should render input', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea>
-                <input/>
+                <input name="test" />
             </ValidatorArea>
         );
 
@@ -19,7 +19,7 @@ describe('test Provider', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea>
                 {() => (
-                    <input/>
+                    <input name="test" />
                 )}
             </ValidatorArea>
         );
@@ -87,5 +87,30 @@ describe('test Provider', () => {
 
         area.find('input').simulate('blur');
         expect(area.find('div').text()).toBe('This field is required');
+    })
+
+    it('should validate element with rule string', () => {
+        Validator.extend('testrule', {
+            passed(): boolean {
+                return false;
+            },
+            message(): string {
+                return 'string rule passed';
+            }
+        });
+
+        const area = mount<ValidatorArea, ValidatorAreaProps>(
+            <ValidatorArea rules={['testrule']}>
+                {({ errors }) => (
+                    <>
+                        <input name="test" />
+                        {errors.length && <div>{errors[0]}</div>}
+                    </>
+                )}
+            </ValidatorArea>
+        );
+
+        area.find('input').simulate('blur');
+        expect(area.find('div').text()).toBe('string rule passed');
     })
 })

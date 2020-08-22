@@ -22,26 +22,26 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
     }
 
     private addArea(name: string, ref: ValidatorArea) {
-        const {areas} = this.state;
-
-        if (Object.prototype.hasOwnProperty.call(areas, name)) {
-            throw new Error('Validation area names should be unique');
-        }
-
-        this.setState((prevState) => ({
-            areas: {
-                ...prevState.areas,
-                [name]: ref
+        this.setState((prevState) => {
+            if (Object.prototype.hasOwnProperty.call(prevState.areas, name)) {
+                throw new Error('Validation area names should be unique');
             }
-        }));
+
+            return {
+                areas: {
+                    ...prevState.areas,
+                    [name]: ref
+                }
+            }
+        });
     }
 
-    private validate(onValidated?: () => void): void {
+    private async validate(onValidated?: () => void): Promise<void> {
         const { areas } = this.state;
 
-        const dirtyAreas = Object.values(areas)
+        const dirtyAreas = (await Promise.all(Object.values(areas)
             .map((area) => area.validate()
-        ).filter((dirty) => dirty);
+        ))).filter((clean) => !clean);
 
         if (!dirtyAreas.length && onValidated) {
             onValidated();
@@ -50,7 +50,7 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
 
     private getScopedProperties(): ProviderScope {
         return {
-            validate: (onValidated?: () => void): void => this.validate(onValidated)
+            validate: (onValidated?: () => void): Promise<void> => this.validate(onValidated)
         };
     }
 
@@ -74,7 +74,7 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
                 value={{
                     rules: rules || [],
                     addArea: (name: string, ref: ValidatorArea): void => this.addArea(name, ref),
-                    validate: (): void => this.validate()
+                    validate: (): Promise<void> => this.validate()
                 }}
             >
                 {children}
