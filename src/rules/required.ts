@@ -1,4 +1,5 @@
 import { ValidationElement } from '../ValidationElement';
+import { capitalize } from '../utils/utils';
 
 export default {
     passed(elements: ValidationElement[]): boolean {
@@ -19,7 +20,7 @@ export default {
         return passed;
     },
 
-    message(): string {
-        return 'This field is required';
+    message(name: string): string {
+        return `${capitalize(name)} is required`;
     }
 };
