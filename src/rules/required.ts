@@ -1,10 +1,10 @@
+import { ValidationElement } from '../ValidationElement';
+
 export default {
-    passed(elements: HTMLElement[]): boolean {
+    passed(elements: ValidationElement[]): boolean {
         let passed = true;
 
         elements.forEach((element) => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-            // @ts-ignore
             if (element instanceof HTMLInputElement
                 || element instanceof HTMLTextAreaElement
             ) {

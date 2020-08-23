@@ -112,7 +112,7 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
             children,
             (child): React.ReactNode => {
                 if (React.isValidElement(child) || isFragment(child)) {
-                    if (child.props.children) {
+                    if (child.props.children && child.type !== 'select') {
                         return React.cloneElement(
                             child,
                             child.props,
@@ -148,7 +148,7 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
     }
 
     private isValidatableNode(node: React.ReactElement): boolean {
-        return node.type === 'input' || node.type === 'textarea';
+        return node.type === 'input' || node.type === 'textarea' || node.type === 'select';
     }
 
     private getScopedProperties(): AreaScope {
