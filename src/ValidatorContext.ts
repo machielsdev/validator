@@ -5,11 +5,9 @@ import ValidatorArea from './ValidatorArea';
 export interface ValidatorContextProps {
     rules: RuleOptions;
     addArea: (name: string, ref: ValidatorArea) => void;
-    validate: () => void;
 }
 
 export const ValidatorContext = React.createContext<ValidatorContextProps>({
     rules: [],
-    addArea: () => undefined,
-    validate: () => undefined
+    addArea: () => undefined
 });

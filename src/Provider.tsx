@@ -73,8 +73,7 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
             <ValidatorContext.Provider
                 value={{
                     rules: rules || [],
-                    addArea: (name: string, ref: ValidatorArea): void => this.addArea(name, ref),
-                    validate: (): Promise<void> => this.validate()
+                    addArea: (name: string, ref: ValidatorArea): void => this.addArea(name, ref)
                 }}
             >
                 {children}
