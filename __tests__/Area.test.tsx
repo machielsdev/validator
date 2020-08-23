@@ -70,7 +70,7 @@ describe('test Provider', () => {
         );
 
         area.find('input').at(0).simulate('blur');
-        expect(area.state().errors[0]).toBe('This field is required');
+        expect(area.state().errors[0]).toBe('Test is required');
     });
 
     it('should render error when area dirty', async () => {
@@ -86,7 +86,7 @@ describe('test Provider', () => {
         );
 
         area.find('input').simulate('blur');
-        expect(area.find('div').text()).toBe('This field is required');
+        expect(area.find('div').text()).toBe('Test is required');
     })
 
     it('should validate element with rule string', () => {
