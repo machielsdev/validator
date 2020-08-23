@@ -59,7 +59,7 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
                     }
 
                     if (typeof rule !== 'string' && !rule.passed(refs)) {
-                        messages.push(rule.message(refs));
+                        messages.push(rule.message(this.getName()));
                         this.dirty = true;
                     }
                 }
