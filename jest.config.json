@@ -1,0 +1,4 @@
+{
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$",
+    "setupFilesAfterEnv": ["./setupTests.ts"]
+}
