@@ -12,6 +12,10 @@ export interface ValidatorAreaProps {
     children: React.ReactNode | ((scope: AreaScope) => React.ReactNode);
 }
 
+export interface ValidatorAreaPropsWithDefault extends ValidatorAreaProps {
+    rules: RuleOptions;
+}
+
 interface ValidatorAreaState {
     errors: string[];
 }
@@ -42,7 +46,7 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
                 errors: []
             }), () => {
                 const refs = ref ? [ref] : this.inputRefs;
-                const { rules: propRules = [] } = this.props;
+                const { rules: propRules } = this.props as ValidatorAreaPropsWithDefault;
                 const { rules: contextRules } = this.context;
                 const rules = [...propRules, ...contextRules];
                 const messages: string[] = [];
