@@ -39,21 +39,21 @@ describe('test Provider', () => {
         expect(provider.instance().props.rules).toBeDefined();
     });
 
-    it('should throw error when area with existing name is addeded', () => {
-            const provider = () => {
-                mount<ValidatorProvider, ValidatorProviderProps>(
-                    <ValidatorProvider>
-                        <ValidatorArea name="test">
-                            <div />
-                        </ValidatorArea>
-                        <ValidatorArea name="test">
-                            <div />
-                        </ValidatorArea>
-                    </ValidatorProvider>
-                );
-            }
+    it('should throw error when area with existing name is added', () => {
+        const provider = () => {
+            mount<ValidatorProvider, ValidatorProviderProps>(
+                <ValidatorProvider>
+                    <ValidatorArea name="test">
+                        <div />
+                    </ValidatorArea>
+                    <ValidatorArea name="test">
+                        <div />
+                    </ValidatorArea>
+                </ValidatorProvider>
+            );
+        }
 
-            expect(() => provider()).toThrow('Validation area names should be unique');
+        expect(() => provider()).toThrow('Validation area names should be unique');
     });
 
     it('should render with function as child', () => {
