@@ -39,6 +39,9 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         rules: []
     }
 
+    /**
+     * Validate the area, or a given element when provided
+     */
     public validate(ref?: ValidationElement): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             this.dirty = false;
@@ -71,6 +74,9 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         })
     }
 
+    /**
+     * @inheritDoc
+     */
     public componentDidMount(): void {
         const { addArea } = this.context;
 
@@ -91,14 +97,16 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         throw new Error('All input areas should contain either a name prop, or only one input-like with a name prop');
     }
 
+    /**
+     * Returns the input references within the area
+     */
     public getInputRefs(): ValidationElement[] {
         return this.inputRefs;
     }
 
-    private validateComponent(ref: ValidationElement): void {
-        this.validate(ref);
-    }
-
+    /**
+     * Prepare inputs so they can be validated when interacted with
+     */
     private prepareInputs(
         children: React.ReactNode
     ): React.ReactNode {
@@ -124,7 +132,7 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
                                     child.props.onBlur();
                                 }
 
-                                this.validateComponent(ref);
+                                this.validate(ref);
                             },
                             ref: (node: ValidationElement) => {
                                 if (node) {
@@ -141,10 +149,16 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         );
     }
 
+    /**
+     * Indicates whether the node is validatable
+     */
     private isValidatableNode(node: React.ReactElement): boolean {
         return node.type === 'input' || node.type === 'textarea' || node.type === 'select';
     }
 
+    /**
+     * Returns the properties accessible in the area component scope
+     */
     private getScopedProperties(): AreaScope {
         const { errors } = this.state;
 
@@ -153,6 +167,9 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         };
     }
 
+    /**
+     * @inheritDoc
+     */
     public render(): React.ReactNode {
         let { children } = this.props;
         this.inputRefs = [];

@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Validator, ValidatorArea, ValidatorProvider } from '../src';
-import { ValidatorProviderProps } from '../src/Provider';
+import { ValidatorProviderProps } from '../src/ValidatorProvider';
 
 
 const tick = () => {

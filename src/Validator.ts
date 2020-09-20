@@ -5,7 +5,7 @@ import {
     IntlShape
 } from '@formatjs/intl'
 import { Rule } from './Rule';
-import ValidatorProvider from './Provider';
+import ValidatorProvider from './ValidatorProvider';
 import ValidatorArea from './ValidatorArea';
 import { ValidationElement } from './ValidationElement';
 import { RuleOptions } from './RuleOptions';
@@ -70,6 +70,9 @@ export class Validator {
         this.intl = this.createIntl();
     }
 
+    /**
+     * Creates a new intl instance
+     */
     private createIntl(): IntlShape<string> {
         return createIntl({
             locale: 'en'
@@ -151,10 +154,16 @@ export class Validator {
         return mergedRules;
     }
 
+    /**
+     * Extend the validator with a new rule
+     */
     public static extend(name: string, rule: Rule): void {
         Validator.rules[name] = rule;
     }
 
+    /**
+     * Chech whether the validator has a rule
+     */
     public static hasRule(name: string): boolean {
         return Object.prototype.hasOwnProperty.call(Validator.rules, name);
     }

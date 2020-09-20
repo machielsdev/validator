@@ -21,6 +21,9 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
         errors: {}
     }
 
+    /**
+     * Add a new area to the provider
+     */
     private addArea(name: string, ref: ValidatorArea) {
         this.setState((prevState) => {
             if (Object.prototype.hasOwnProperty.call(prevState.areas, name)) {
@@ -36,6 +39,9 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
         });
     }
 
+    /**
+     * Validate all areas within this provider
+     */
     private async validate(onValidated?: () => void): Promise<void> {
         const { areas } = this.state;
 
@@ -48,12 +54,18 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
         }
     }
 
+    /**
+     * Returns the properties accessible in the provider component scope
+     */
     private getScopedProperties(): ProviderScope {
         return {
             validate: (onValidated?: () => void): Promise<void> => this.validate(onValidated)
         };
     }
 
+    /**
+     * @inheritDoc
+     */
     public render(): React.ReactNode {
         const {
             rules
