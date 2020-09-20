@@ -1,13 +1,17 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { ValidatorArea } from '../../src';
+import { Validator, ValidatorArea } from '../../src';
 import { ValidatorAreaProps } from '../../src/ValidatorArea';
 import required from '../../src/rules/required';
 
 describe('test required rule', () => {
+    beforeEach(() => {
+        Validator.extend('required', required);
+    });
+
     it('should falsely validate input', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[required]}>
+            <ValidatorArea rules="required">
                 <input name="test" />
             </ValidatorArea>
         );
@@ -19,7 +23,7 @@ describe('test required rule', () => {
 
     it('should falsely validate textarea', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[required]}>
+            <ValidatorArea rules="required">
                 <textarea name="test" />
             </ValidatorArea>
         );
@@ -31,7 +35,7 @@ describe('test required rule', () => {
 
     it('should falsely validate select', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[required]}>
+            <ValidatorArea rules="required">
                 <select name="test">
                     <option value="">Choose...</option>
                 </select>
@@ -45,7 +49,7 @@ describe('test required rule', () => {
 
     it('should validate select', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[required]}>
+            <ValidatorArea rules="required">
                 <select name="test">
                     <option value="foo">Choose...</option>
                 </select>

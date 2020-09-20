@@ -1,13 +1,14 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { ValidatorArea } from '../../src';
+import { Validator, ValidatorArea } from '../../src';
 import { ValidatorAreaProps } from '../../src/ValidatorArea';
 import min from '../../src/rules/min';
 
 describe('test min rule', () => {
+    Validator.extend('min', min);
     it('should falsely validate input', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[min(5)]}>
+            <ValidatorArea rules="min:5">
                 <input name="test" />
             </ValidatorArea>
         );
@@ -19,7 +20,7 @@ describe('test min rule', () => {
 
     it('should falsely validate textarea', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[min(5)]}>
+            <ValidatorArea rules="min:5">
                 <textarea name="test" />
             </ValidatorArea>
         );
@@ -31,7 +32,7 @@ describe('test min rule', () => {
 
     it('should falsely validate select', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[min(5)]}>
+            <ValidatorArea rules="min:5">
                 <select name="test">
                     <option value="">Choose...</option>
                 </select>
@@ -45,7 +46,7 @@ describe('test min rule', () => {
 
     it('should truly validate select', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[min(5)]}>
+            <ValidatorArea rules="min:5">
                 <select name="test">
                     <option value={5}>Choose...</option>
                 </select>

@@ -1,5 +1,4 @@
 import { ValidationElement } from '../ValidationElement';
-import { capitalize } from '../utils/utils';
 
 export default {
     passed(elements: ValidationElement[]): boolean {
@@ -20,7 +19,7 @@ export default {
         return passed;
     },
 
-    message(name: string): string {
-        return `${capitalize(name)} is required`;
+    message(): string {
+        return `{name} is required`;
     }
 };

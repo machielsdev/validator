@@ -2,9 +2,19 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { ValidatorArea, Validator } from '../src';
 import { ValidatorAreaProps } from '../src/ValidatorArea';
-import required from '../src/rules/required';
 
 describe('test Provider', () => {
+    beforeEach(() => {
+        Validator.extend('passes_not', {
+            passed(): boolean {
+                return false;
+            },
+            message(): string {
+                return 'not passed';
+            }
+        });
+    });
+
     it('should render input', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea>
@@ -64,18 +74,18 @@ describe('test Provider', () => {
 
     it('should apply rules on blur', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[required]}>
+            <ValidatorArea rules="passes_not">
                 <input name="test" />
             </ValidatorArea>
         );
 
         area.find('input').at(0).simulate('blur');
-        expect(area.state().errors[0]).toBe('Test is required');
+        expect(area.state().errors[0]).toBe('Not passed');
     });
 
     it('should render error when area dirty', async () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[required]}>
+            <ValidatorArea rules="passes_not">
                 {({ errors }) => (
                     <>
                         <input name="test" />
@@ -86,39 +96,14 @@ describe('test Provider', () => {
         );
 
         area.find('input').simulate('blur');
-        expect(area.find('div').text()).toBe('Test is required');
-    })
-
-    it('should validate element with rule string', () => {
-        Validator.extend('testrule', {
-            passed(): boolean {
-                return false;
-            },
-            message(): string {
-                return 'string rule passed';
-            }
-        });
-
-        const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={['testrule']}>
-                {({ errors }) => (
-                    <>
-                        <input name="test" />
-                        {errors.length && <div>{errors[0]}</div>}
-                    </>
-                )}
-            </ValidatorArea>
-        );
-
-        area.find('input').simulate('blur');
-        expect(area.find('div').text()).toBe('string rule passed');
+        expect(area.find('div').text()).toBe('Not passed');
     })
 
     it('should call element\'s provided blur along validator blur', () => {
         const mockFn = jest.fn();
 
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[required]}>
+            <ValidatorArea rules="passes_not">
                 <input name="test" onBlur={mockFn} />
             </ValidatorArea>
         );
