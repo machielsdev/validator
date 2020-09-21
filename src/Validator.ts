@@ -162,7 +162,7 @@ export class Validator {
     }
 
     /**
-     * Chech whether the validator has a rule
+     * Check whether the validator has a rule
      */
     public static hasRule(name: string): boolean {
         return Object.prototype.hasOwnProperty.call(Validator.rules, name);
