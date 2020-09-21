@@ -48,7 +48,7 @@ export class Validator {
     private name: string | null;
 
     /**
-     * INtl cache to prevent memory leaks
+     * Intl cache to prevent memory leaks
      */
     private intlCache: IntlCache;
 
