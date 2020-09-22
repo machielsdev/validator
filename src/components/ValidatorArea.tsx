@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { isFragment } from 'react-is';
-import { RuleOptions } from './RuleOptions';
-import { ValidatorContext } from './ValidatorContext';
-import { ValidationElement } from './ValidationElement';
-import { AreaScope } from './AreaScope';
-import { Validator } from './Validator';
+import { RuleOptions } from '@/RuleOptions';
+import { AreaScope } from '@/AreaScope';
+import { ValidationElement } from '@/ValidationElement';
+import { ValidatorContext } from '@/ValidatorContext';
+import { Validator } from '@/Validator';
 
 export interface ValidatorAreaProps {
     rules?: RuleOptions;
@@ -25,7 +25,7 @@ interface ValidatorAreaComponentsProps {
     ref: React.RefObject<ValidationElement>;
 }
 
-class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaState> {
+export class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaState> {
     public static contextType = ValidatorContext;
     public context!: React.ContextType<typeof ValidatorContext>;
     private inputRefs: ValidationElement[] = [];
@@ -183,5 +183,3 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         return this.prepareInputs(children);
     }
 }
-
-export default ValidatorArea;

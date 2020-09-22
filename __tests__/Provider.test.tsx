@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Validator, ValidatorArea, ValidatorProvider } from '../src';
-import { ValidatorProviderProps } from '../src/ValidatorProvider';
+import { Validator } from '@/Validator';
+import ValidatorProvider, { ValidatorProviderProps } from '@/components/ValidatorProvider';
+import { ValidatorArea } from '@/components/ValidatorArea';
 
 
 const tick = () => {
@@ -10,7 +11,7 @@ const tick = () => {
     })
 }
 
-describe('test Provider', () => {
+describe('test ValidatorProvider', () => {
     beforeEach(() => {
         Validator.extend('passes_not', {
             passed(): boolean {
@@ -31,7 +32,7 @@ describe('test Provider', () => {
         });
     });
 
-    it('should render Provider', () => {
+    it('should render ValidatorProvider', () => {
         const provider = mount<ValidatorProvider, ValidatorProviderProps>(
             <ValidatorProvider rules="passes_not" />
         );

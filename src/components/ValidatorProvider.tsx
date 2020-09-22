@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { ValidatorContext } from './ValidatorContext';
-import { RuleOptions } from './RuleOptions';
-import ValidatorArea from './ValidatorArea';
-import { ProviderScope } from './ProviderScope';
-import { Messages } from './Messages';
+import { Messages } from '@/Messages';
+import { RuleOptions } from '@/RuleOptions';
+import { ProviderScope } from '@/ProviderScope';
+import { ValidatorContext } from '@/ValidatorContext';
+import { ValidatorArea } from '@/components/ValidatorArea';
 
 export interface ValidatorProviderProps {
     rules?: RuleOptions;
@@ -15,7 +15,7 @@ interface ValidatorProviderState {
     errors: Messages
 }
 
-class ValidatorProvider extends React.Component<ValidatorProviderProps, ValidatorProviderState> {
+export class ValidatorProvider extends React.Component<ValidatorProviderProps, ValidatorProviderState> {
     public readonly state: ValidatorProviderState = {
         areas: {},
         errors: {}

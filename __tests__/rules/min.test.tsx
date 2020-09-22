@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Validator, ValidatorArea } from '../../src';
-import { ValidatorAreaProps } from '../../src/ValidatorArea';
-import min from '../../src/rules/min';
+import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
+import min from '@/rules/min';
+import { Validator } from '@/Validator';
 
 describe('test min rule', () => {
     Validator.extend('min', min);

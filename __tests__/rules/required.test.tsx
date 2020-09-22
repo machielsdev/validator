@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Validator, ValidatorArea } from '../../src';
-import { ValidatorAreaProps } from '../../src/ValidatorArea';
-import required from '../../src/rules/required';
+import required from '@/rules/required';
+import { ValidatorAreaProps, ValidatorArea } from '@/components/ValidatorArea';
+import { Validator } from '@/Validator';
 
 describe('test required rule', () => {
     beforeEach(() => {

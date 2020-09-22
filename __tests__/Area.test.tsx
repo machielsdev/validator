@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { ValidatorArea, Validator } from '../src';
-import { ValidatorAreaProps } from '../src/ValidatorArea';
+import { Validator } from '@/Validator';
+import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
 
-describe('test Provider', () => {
+describe('test ValidatorProvider', () => {
     beforeEach(() => {
         Validator.extend('passes_not', {
             passed(): boolean {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Validator, ValidatorArea } from '../../src';
-import { ValidatorAreaProps } from '../../src/ValidatorArea';
-import max from '../../src/rules/max';
+import max from '@/rules/max';
+import { Validator } from '@/Validator';
+import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
 
 describe('test max rule', () => {
     beforeEach(() => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { RuleOptions } from './RuleOptions';
-import ValidatorArea from './ValidatorArea';
+import { RuleOptions } from '@/RuleOptions';
+import { ValidatorArea } from '@/components/ValidatorArea';
 
 export interface ValidatorContextProps {
     rules: RuleOptions;

@@ -5,23 +5,11 @@ import {
     IntlShape
 } from '@formatjs/intl'
 import { Rule } from './Rule';
-import ValidatorProvider from './ValidatorProvider';
-import ValidatorArea from './ValidatorArea';
-import { ValidationElement } from './ValidationElement';
-import { RuleOptions } from './RuleOptions';
-import { capitalize } from './utils/utils';
+import { ValidationElement } from '@/ValidationElement';
+import { RuleOptions } from '@/RuleOptions';
+import { capitalize } from '@/utils/utils';
 
 export class Validator {
-    /**
-     * Area component used as wrapper around input components
-     */
-    public static Area = ValidatorArea;
-
-    /**
-     * Provider component used to validate multiple areas at once
-     */
-    public static Provider = ValidatorProvider;
-
     /**
      * Map containing the rule object belonging to a rule string
      */
@@ -45,12 +33,12 @@ export class Validator {
     /**
      * Name used to specify error messages
      */
-    private name: string | null;
+    private readonly name: string | null;
 
     /**
      * Intl cache to prevent memory leaks
      */
-    private intlCache: IntlCache;
+    private readonly intlCache: IntlCache;
 
     /**
      * Intl constructor to localize messages
