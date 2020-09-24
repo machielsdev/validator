@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { ValidatorContext } from './ValidatorContext';
-import { RuleOptions } from './RuleOptions';
-import ValidatorArea from './ValidatorArea';
-import { ProviderScope } from './ProviderScope';
-import { Messages } from './Messages';
+import { Messages } from '@/Messages';
+import { RuleOptions } from '@/RuleOptions';
+import { ProviderScope } from '@/ProviderScope';
+import { ValidatorContext } from '@/ValidatorContext';
+import { ValidatorArea } from '@/components/ValidatorArea';
 
 export interface ValidatorProviderProps {
     rules?: RuleOptions;
@@ -15,12 +15,15 @@ interface ValidatorProviderState {
     errors: Messages
 }
 
-class ValidatorProvider extends React.Component<ValidatorProviderProps, ValidatorProviderState> {
+export class ValidatorProvider extends React.Component<ValidatorProviderProps, ValidatorProviderState> {
     public readonly state: ValidatorProviderState = {
         areas: {},
         errors: {}
     }
 
+    /**
+     * Add a new area to the provider
+     */
     private addArea(name: string, ref: ValidatorArea) {
         this.setState((prevState) => {
             if (Object.prototype.hasOwnProperty.call(prevState.areas, name)) {
@@ -36,6 +39,9 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
         });
     }
 
+    /**
+     * Validate all areas within this provider
+     */
     private async validate(onValidated?: () => void): Promise<void> {
         const { areas } = this.state;
 
@@ -48,12 +54,18 @@ class ValidatorProvider extends React.Component<ValidatorProviderProps, Validato
         }
     }
 
+    /**
+     * Returns the properties accessible in the provider component scope
+     */
     private getScopedProperties(): ProviderScope {
         return {
             validate: (onValidated?: () => void): Promise<void> => this.validate(onValidated)
         };
     }
 
+    /**
+     * @inheritDoc
+     */
     public render(): React.ReactNode {
         const {
             rules

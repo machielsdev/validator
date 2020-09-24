@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { ValidatorArea, ValidatorProvider } from '../src';
-import required from '../src/rules/required';
-import { ValidatorProviderProps } from '../src/Provider';
+import { Validator } from '@/Validator';
+import ValidatorProvider, { ValidatorProviderProps } from '@/components/ValidatorProvider';
+import { ValidatorArea } from '@/components/ValidatorArea';
 
 
 const tick = () => {
@@ -11,31 +11,51 @@ const tick = () => {
     })
 }
 
-describe('test Provider', () => {
-    it('should render Provider', () => {
+describe('test ValidatorProvider', () => {
+    beforeEach(() => {
+        Validator.extend('passes_not', {
+            passed(): boolean {
+                return false;
+            },
+            message(): string {
+                return 'not passed';
+            }
+        });
+
+        Validator.extend('passes', {
+            passed(): boolean {
+                return true;
+            },
+            message(): string {
+                return 'passed';
+            }
+        });
+    });
+
+    it('should render ValidatorProvider', () => {
         const provider = mount<ValidatorProvider, ValidatorProviderProps>(
-            <ValidatorProvider rules={[required]} />
+            <ValidatorProvider rules="passes_not" />
         );
 
         expect(provider.instance().props.rules).toBeDefined();
     });
 
-    it('should throw error when area with existing name is addeded', () => {
-            const provider = () => {
-                mount<ValidatorProvider, ValidatorProviderProps>(
-                    <ValidatorProvider>
-                        <ValidatorArea name="test">
-                            <div />
-                        </ValidatorArea>
-                        <ValidatorArea name="test">
-                            <div />
-                        </ValidatorArea>
-                    </ValidatorProvider>
-                );
-            }
+    it('should throw error when area with existing name is added', () => {
+        const provider = () => {
+            mount<ValidatorProvider, ValidatorProviderProps>(
+                <ValidatorProvider>
+                    <ValidatorArea name="test">
+                        <div />
+                    </ValidatorArea>
+                    <ValidatorArea name="test">
+                        <div />
+                    </ValidatorArea>
+                </ValidatorProvider>
+            );
+        }
 
-            expect(() => provider()).toThrow('Validation area names should be unique');
-    })
+        expect(() => provider()).toThrow('Validation area names should be unique');
+    });
 
     it('should render with function as child', () => {
         const provider = mount<ValidatorProvider, ValidatorProviderProps>(
@@ -45,7 +65,7 @@ describe('test Provider', () => {
         );
 
         expect(provider.find('div').text()).toBe('test');
-    })
+    });
 
     it('should add an area when provided as child', () => {
         const provider = mount<ValidatorProvider, ValidatorProviderProps>(
@@ -69,10 +89,10 @@ describe('test Provider', () => {
             <ValidatorProvider>
                 {({ validate }) => (
                     <>
-                        <ValidatorArea rules={[required]} name="test1">
+                        <ValidatorArea rules="passes_not" name="test1">
                             <input value="" />
                         </ValidatorArea>
-                        <ValidatorArea rules={[required]} name="test2">
+                        <ValidatorArea rules="passes_not" name="test2">
                             <input value="" />
                         </ValidatorArea>
                         <button onClick={() => validate(mockFn)} />
@@ -93,7 +113,7 @@ describe('test Provider', () => {
             <ValidatorProvider>
                 {({ validate }) => (
                     <>
-                        <ValidatorArea rules={[required]} name="test1">
+                        <ValidatorArea rules="passes" name="test1">
                             <input value="foo" />
                         </ValidatorArea>
                         <button onClick={() => validate(mockFn)} />
@@ -127,5 +147,5 @@ describe('test Provider', () => {
         provider.find('button').simulate('click');
         await tick();
         expect(mockFn).toHaveBeenCalled()
-    })
+    });
 })

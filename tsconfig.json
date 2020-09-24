@@ -29,11 +29,15 @@
         "skipLibCheck": true,
         "esModuleInterop": true,
         "strict": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true
+        "isolatedModules": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        }
     },
     "include": [
-        "src"
+        "src/**/*.ts",
+        "src/**/*.tsx"
     ],
     "exclude": [
         "node_modules",

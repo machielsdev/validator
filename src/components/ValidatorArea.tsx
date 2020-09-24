@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { isFragment } from 'react-is';
-import { RuleOptions } from './RuleOptions';
-import { ValidatorContext } from './ValidatorContext';
-import { ValidationElement } from './ValidationElement';
-import { AreaScope } from './AreaScope';
-import { Validator } from './Validator';
+import { RuleOptions } from '@/RuleOptions';
+import { AreaScope } from '@/AreaScope';
+import { ValidationElement } from '@/ValidationElement';
+import { ValidatorContext } from '@/ValidatorContext';
+import { Validator } from '@/Validator';
 
 export interface ValidatorAreaProps {
     rules?: RuleOptions;
@@ -25,7 +25,7 @@ interface ValidatorAreaComponentsProps {
     ref: React.RefObject<ValidationElement>;
 }
 
-class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaState> {
+export class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaState> {
     public static contextType = ValidatorContext;
     public context!: React.ContextType<typeof ValidatorContext>;
     private inputRefs: ValidationElement[] = [];
@@ -39,44 +39,44 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         rules: []
     }
 
+    /**
+     * Validate the area, or a given element when provided
+     */
     public validate(ref?: ValidationElement): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             this.dirty = false;
             this.setState(() => ({
                 errors: []
             }), () => {
-                const refs = ref ? [ref] : this.inputRefs;
                 const { rules: propRules } = this.props as ValidatorAreaPropsWithDefault;
                 const { rules: contextRules } = this.context;
-                const rules = [...propRules, ...contextRules];
-                const messages: string[] = [];
+                const rules = Validator.mergeRules(propRules, contextRules);
+                const refs = ref ? [ref] : this.inputRefs;
 
-                for (let i = 0; i < rules.length; i++) {
-                    let rule = rules[i];
+                const validator = new Validator(
+                    refs,
+                    rules,
+                    ref ? ref.getAttribute('name') : this.getName()
+                );
 
-                    if (typeof rule === 'string' && Validator.hasRule(rule)) {
-                        rule = Validator.rules[rule];
-                    }
-
-                    if (typeof rule !== 'string' && !rule.passed(refs)) {
-                        messages.push(rule.message(this.getName()));
-                        this.dirty = true;
-                    }
-                }
+                this.dirty = !validator.validate();
 
                 if (this.dirty) {
-                    this.setState(() => ({
-                        errors: messages
-                    }), () => {
+                    this.setState({
+                        errors: validator.getErrors()
+                    }, () => {
                         resolve(false);
-                    });
+                    })
                 } else {
-                    resolve(true);
+                    resolve(true)
                 }
             });
         })
     }
 
+    /**
+     * @inheritDoc
+     */
     public componentDidMount(): void {
         const { addArea } = this.context;
 
@@ -97,14 +97,16 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         throw new Error('All input areas should contain either a name prop, or only one input-like with a name prop');
     }
 
+    /**
+     * Returns the input references within the area
+     */
     public getInputRefs(): ValidationElement[] {
         return this.inputRefs;
     }
 
-    private validateComponent(ref: ValidationElement): void {
-        this.validate(ref);
-    }
-
+    /**
+     * Prepare inputs so they can be validated when interacted with
+     */
     private prepareInputs(
         children: React.ReactNode
     ): React.ReactNode {
@@ -130,7 +132,7 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
                                     child.props.onBlur();
                                 }
 
-                                this.validateComponent(ref);
+                                this.validate(ref);
                             },
                             ref: (node: ValidationElement) => {
                                 if (node) {
@@ -147,10 +149,16 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         );
     }
 
+    /**
+     * Indicates whether the node is validatable
+     */
     private isValidatableNode(node: React.ReactElement): boolean {
         return node.type === 'input' || node.type === 'textarea' || node.type === 'select';
     }
 
+    /**
+     * Returns the properties accessible in the area component scope
+     */
     private getScopedProperties(): AreaScope {
         const { errors } = this.state;
 
@@ -159,6 +167,9 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         };
     }
 
+    /**
+     * @inheritDoc
+     */
     public render(): React.ReactNode {
         let { children } = this.props;
         this.inputRefs = [];
@@ -172,5 +183,3 @@ class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaSta
         return this.prepareInputs(children);
     }
 }
-
-export default ValidatorArea;

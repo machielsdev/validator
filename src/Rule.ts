@@ -1,6 +1,12 @@
 import { ValidationElement } from './ValidationElement';
 
 export type Rule = {
-    passed(elements: ValidationElement[]): boolean;
-    message(name: string): string;
+    /**
+     * Returns whether the rule passed with the given element(s)
+     */
+    passed(elements: ValidationElement[], ...args: string[]): boolean;
+    /**
+     * Message shown when the rule doesn't pass
+     */
+    message(): string;
 }

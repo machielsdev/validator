@@ -1,13 +1,17 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { ValidatorArea } from '../../src';
-import { ValidatorAreaProps } from '../../src/ValidatorArea';
-import max from '../../src/rules/max';
+import max from '@/rules/max';
+import { Validator } from '@/Validator';
+import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
 
 describe('test max rule', () => {
+    beforeEach(() => {
+        Validator.extend('max', max);
+    });
+
     it('should falsely validate input', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[max(5)]}>
+            <ValidatorArea rules="max:5">
                 <input name="test" value="6" />
             </ValidatorArea>
         );
@@ -19,7 +23,7 @@ describe('test max rule', () => {
 
     it('should falsely validate textarea', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[max(5)]}>
+            <ValidatorArea rules="max:5">
                 <textarea name="test" value="6" />
             </ValidatorArea>
         );
@@ -31,7 +35,7 @@ describe('test max rule', () => {
 
     it('should falsely validate select', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[max(5)]}>
+            <ValidatorArea rules="max:5">
                 <select name="test">
                     <option value="">Choose...</option>
                 </select>
@@ -45,7 +49,7 @@ describe('test max rule', () => {
 
     it('should truly validate select', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules={[max(5)]}>
+            <ValidatorArea rules="max:5">
                 <select name="test">
                     <option value={5}>Choose...</option>
                 </select>

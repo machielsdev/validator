@@ -1,4 +1,4 @@
-export { default as ValidatorProvider } from './Provider';
+export { ValidatorProvider } from '@/components/ValidatorProvider';
 export { Validator } from './Validator';
-export { default as ValidatorArea } from './ValidatorArea';
-export { ValidatorContext } from './ValidatorContext';
+export { ValidatorArea } from '@/components/ValidatorArea';
+export { ValidatorContext } from '@/ValidatorContext';
