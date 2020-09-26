@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f582be61-c594-4014-8881-b866f98325f4" name="Default Changelist" comment="" />
+    <list default="true" id="f582be61-c594-4014-8881-b866f98325f4" name="Default Changelist" comment="Added access to validator, area and provider (when used) within validation rules">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.travis.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -9,6 +12,14 @@
   </component>
   <component name="ComposerSettings">
     <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="JupyterTrust" id="bb409757-2e3c-42fa-bd17-81313d7d5fe6" />
   <component name="ProjectId" id="1gKHO5KYmKXbglv2GCcWb50JdmL" />
@@ -20,10 +31,120 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs.jest.jest_package" value="$PROJECT_DIR$/node_modules/jest" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Jest.test Provider.should render error when area dirty">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test max rule" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/jest.config.json" />
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/__tests__/rules/max.test.tsx" />
+      <test-names>
+        <test-name value="test max rule" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="test min rule" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/jest.config.json" />
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/__tests__/rules/min.test.tsx" />
+      <test-names>
+        <test-name value="test min rule" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="test validator.should validate rules as string" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/jest.config.json" />
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/__tests__/Validator.test.tsx" />
+      <test-names>
+        <test-name value="test validator" />
+        <test-name value="should validate rules as string" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="test validator.should validate with parameters" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/jest.config.json" />
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/__tests__/Validator.test.tsx" />
+      <test-names>
+        <test-name value="test validator" />
+        <test-name value="should validate with parameters" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="test validator.throws an exception when rule is not found" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/jest.config.json" />
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/__tests__/Validator.test.tsx" />
+      <test-names>
+        <test-name value="test validator" />
+        <test-name value="throws an exception when rule is not found" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Jest.test validator.throws an exception when rule is not found" />
+        <item itemvalue="Jest.test validator.should validate with parameters" />
+        <item itemvalue="Jest.test validator.should validate rules as string" />
+        <item itemvalue="Jest.test min rule" />
+        <item itemvalue="Jest.test max rule" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -34,16 +155,222 @@
       <option name="presentableId" value="Default" />
       <updated>1597856329680</updated>
       <workItem from="1597856336436" duration="94000" />
+      <workItem from="1599118042873" duration="2272000" />
+      <workItem from="1599462223075" duration="2499000" />
+      <workItem from="1599545871794" duration="2668000" />
+      <workItem from="1600366843907" duration="8403000" />
+      <workItem from="1600500626759" duration="13831000" />
+      <workItem from="1600760742171" duration="16940000" />
+      <workItem from="1600849435713" duration="6387000" />
+      <workItem from="1600973139527" duration="23000" />
+      <workItem from="1601020889226" duration="8874000" />
+      <workItem from="1601119994223" duration="6890000" />
     </task>
+    <task id="LOCAL-00001" summary="Added basic localization and fixed tests">
+      <created>1600603797033</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1600603797033</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fixed eslint for tests">
+      <created>1600603954618</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1600603954618</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added docs, cleanup">
+      <created>1600614414828</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1600614414828</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fixed typo">
+      <created>1600672907924</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1600672907924</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixed typo">
+      <created>1600673892156</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1600673892156</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added root imports, reorganized file structure">
+      <created>1600793437637</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1600793437637</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fixed including and ignoring files incorrectly in eslint and tsconfig">
+      <created>1601129017593</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1601129017593</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added travis config">
+      <created>1601130549887</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1601130549887</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added missing doc">
+      <created>1601130933686</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1601130933686</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Minor fixes">
+      <created>1601131153317</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1601131153317</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Unneeded initial value fixes">
+      <created>1601143654435</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1601143654435</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Re-added missing null type for name">
+      <created>1601144562939</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1601144562939</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added basic localization and fixed tests" />
+    <MESSAGE value="Fixed eslint for tests" />
+    <MESSAGE value="Added docs, cleanup" />
+    <MESSAGE value="Fixed typo" />
+    <MESSAGE value="Added root imports, reorganized file structure" />
+    <MESSAGE value="Fixed including and ignoring files incorrectly in eslint and tsconfig" />
+    <MESSAGE value="Added travis config" />
+    <MESSAGE value="Added missing doc" />
+    <MESSAGE value="Minor fixes" />
+    <MESSAGE value="Unneeded initial value fixes" />
+    <MESSAGE value="Re-added missing null type for name" />
+    <option name="LAST_COMMIT_MESSAGE" value="Re-added missing null type for name" />
   </component>
   <component name="WindowStateProjectService">
     <state x="208" y="31" key="#Project_Structure" timestamp="1597856340307">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="208" y="31" key="#Project_Structure/0.0.1440.900@0.0.1440.900" timestamp="1597856340307" />
+    <state x="-1496" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600500915186">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1496" y="202" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600500915186" />
+    <state x="698" y="294" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1601023044530">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1222" y="294" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600601596127" />
+    <state x="698" y="294" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601023044530" />
+    <state x="0" y="0" width="1920" height="1080" key="CommitChangelistDialog2" timestamp="1601144562813">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1384" y="49" key="CommitChangelistDialog2/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600614414662" />
+    <state x="0" y="0" width="1920" height="1080" key="CommitChangelistDialog2/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601144562813" />
+    <state x="447" y="-1031" key="CommitChangelistDialog2/0.0.1440.900/-89.-1080.1920.1080@-89.-1080.1920.1080" timestamp="1600673892069" />
+    <state width="1876" height="369" key="GridCell.Tab.0.bottom" timestamp="1601128403395">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="419" key="GridCell.Tab.0.bottom/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600603838366" />
+    <state width="1876" height="369" key="GridCell.Tab.0.bottom/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601128403395" />
+    <state width="1396" height="233" key="GridCell.Tab.0.bottom/0.0.1440.900/-168.-1080.1920.1080@0.0.1440.900" timestamp="1599031332491" />
+    <state width="1876" height="419" key="GridCell.Tab.0.bottom/0.0.1440.900/-89.-1080.1920.1080@-89.-1080.1920.1080" timestamp="1600675121046" />
+    <state width="1396" height="233" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1598988226583" />
+    <state width="1876" height="369" key="GridCell.Tab.0.center" timestamp="1601128403394">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="419" key="GridCell.Tab.0.center/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600603838365" />
+    <state width="1876" height="369" key="GridCell.Tab.0.center/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601128403394" />
+    <state width="1396" height="233" key="GridCell.Tab.0.center/0.0.1440.900/-168.-1080.1920.1080@0.0.1440.900" timestamp="1599031332490" />
+    <state width="1876" height="419" key="GridCell.Tab.0.center/0.0.1440.900/-89.-1080.1920.1080@-89.-1080.1920.1080" timestamp="1600675121046" />
+    <state width="1396" height="233" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1598988226583" />
+    <state width="1876" height="369" key="GridCell.Tab.0.left" timestamp="1601128403393">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="419" key="GridCell.Tab.0.left/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600603838365" />
+    <state width="1876" height="369" key="GridCell.Tab.0.left/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601128403393" />
+    <state width="1396" height="233" key="GridCell.Tab.0.left/0.0.1440.900/-168.-1080.1920.1080@0.0.1440.900" timestamp="1599031332488" />
+    <state width="1876" height="419" key="GridCell.Tab.0.left/0.0.1440.900/-89.-1080.1920.1080@-89.-1080.1920.1080" timestamp="1600675121045" />
+    <state width="1396" height="233" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1598988226582" />
+    <state width="1876" height="369" key="GridCell.Tab.0.right" timestamp="1601128403394">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1876" height="419" key="GridCell.Tab.0.right/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600603838365" />
+    <state width="1876" height="369" key="GridCell.Tab.0.right/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601128403394" />
+    <state width="1396" height="233" key="GridCell.Tab.0.right/0.0.1440.900/-168.-1080.1920.1080@0.0.1440.900" timestamp="1599031332490" />
+    <state width="1876" height="419" key="GridCell.Tab.0.right/0.0.1440.900/-89.-1080.1920.1080@-89.-1080.1920.1080" timestamp="1600675121046" />
+    <state width="1396" height="233" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1598988226583" />
+    <state x="308" y="192" key="IDE.errors.dialog" timestamp="1600934197303">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="308" y="192" key="IDE.errors.dialog/0.0.1440.900/-1206.-1080.1920.1080/714.-1080.1920.1080@0.0.1440.900" timestamp="1600934197303" />
+    <state x="-1625" y="107" key="SettingsEditor" timestamp="1600500877598">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1625" y="107" key="SettingsEditor/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600500877598" />
+    <state x="221" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1598989223174" />
+    <state x="560" y="261" key="Vcs.Push.Dialog.v2" timestamp="1601144565450">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1360" y="261" key="Vcs.Push.Dialog.v2/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600614415938" />
+    <state x="560" y="261" key="Vcs.Push.Dialog.v2/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601144565450" />
+    <state x="471" y="-819" key="Vcs.Push.Dialog.v2/0.0.1440.900/-89.-1080.1920.1080@-89.-1080.1920.1080" timestamp="1600673893202" />
+    <state x="662" y="279" width="596" height="614" key="find.popup" timestamp="1601131068271">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1258" y="279" width="596" height="614" key="find.popup/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600603559089" />
+    <state x="662" y="279" width="596" height="614" key="find.popup/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601131068271" />
+    <state x="573" y="-801" width="596" height="614" key="find.popup/0.0.1440.900/-89.-1080.1920.1080@-89.-1080.1920.1080" timestamp="1600672994545" />
+    <state x="-1824" y="101" key="new project wizard" timestamp="1600793558245">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1824" y="101" key="new project wizard/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1600793558245" />
+    <state x="-1134" y="275" key="refactoring.ChangeSignatureDialog" timestamp="1600503743579">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1134" y="275" key="refactoring.ChangeSignatureDialog/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600503743579" />
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1601144468779">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1295" y="241" width="670" height="676" key="search.everywhere.popup/-1920.0.1920.1080/0.0.1920.1080@-1920.0.1920.1080" timestamp="1600614343587" />
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/-1920.0.1920.1080/0.0.1920.1080@0.0.1920.1080" timestamp="1601144468779" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/validator$test_Provider_should_render_error_when_area_dirty__2_.info" NAME="test Provider.should render error when area dirty (2) Coverage Results" MODIFIED="1598118817716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/validator$test_Provider_should_apply_rules_on_blur.info" NAME="test Provider.should apply rules on blur Coverage Results" MODIFIED="1598007312236" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/validator$test_Provider_should_default_rules_to_empty_array_when_undefined.info" NAME="test Provider.should default rules to empty array when undefined Coverage Results" MODIFIED="1598178201991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/validator$test_Provider__2_.info" NAME="test Provider (2) Coverage Results" MODIFIED="1598119526233" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
