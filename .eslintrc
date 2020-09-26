@@ -15,6 +15,7 @@
         "node": true,
         "es6": true
     },
+    "ignorePatterns": ["dist", "setupTests.ts", "babel.config.js"],
     "rules": {
         "comma-dangle": "off",
         "class-methods-use-this": "off",
