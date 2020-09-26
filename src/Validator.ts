@@ -34,7 +34,7 @@ export class Validator {
     /**
      * Name used to specify error messages
      */
-    private readonly name: string;
+    private readonly name: string | null;
 
     /**
      * Intl cache to prevent memory leaks
@@ -54,7 +54,7 @@ export class Validator {
     public constructor(
         elements: ValidationElement[],
         rules: RuleOptions,
-        name: string,
+        name: string | null,
     ) {
         this.elements = elements;
         this.validationRules = rules;
