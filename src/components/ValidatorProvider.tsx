@@ -65,7 +65,7 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
     }
 
     /**
-     * Returns an array of input refs, either all or for a specific area
+     * Gets a list of validation element refs, optionally specified by area name
      */
     private getRefs(name?: string): ValidationElement[] {
         const refs: ValidationElement[] = [];

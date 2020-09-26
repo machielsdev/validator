@@ -19,12 +19,12 @@ export class Validator {
     /**
      * The elements to be validated
      */
-    private elements: ValidationElement[] = [];
+    private readonly elements: ValidationElement[] = [];
 
     /**
      * The rules to validate the elements with
      */
-    private validationRules: RuleOptions = [];
+    private readonly validationRules: RuleOptions = [];
 
     /**
      * Validation errors when elements are invalid
@@ -34,7 +34,7 @@ export class Validator {
     /**
      * Name used to specify error messages
      */
-    private name: string | null = null;
+    private readonly name: string | null = null;
 
     /**
      * Intl cache to prevent memory leaks
@@ -138,12 +138,18 @@ export class Validator {
         return this.errors;
     }
 
+    /**
+     * Sets the current area
+     */
     public setArea(area: ValidatorArea): Validator {
         this.area = area;
 
         return this;
     }
 
+    /**
+     * Gets the area where this validator instance is used
+     */
     public getArea(): ValidatorArea {
         if (this.area) {
             return this.area;
@@ -152,6 +158,9 @@ export class Validator {
         throw new Error('Areas are only available when validating React components.');
     }
 
+    /**
+     * Gets a list of validation element refs, optionally specified by area name
+     */
     public refs(name?: string): ValidationElement[] {
         return this.getArea().context.getRefs(name);
     }
