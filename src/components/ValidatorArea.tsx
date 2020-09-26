@@ -26,17 +26,47 @@ interface ValidatorAreaComponentsProps {
 }
 
 export class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaState> {
+    /**
+     * @inheritDoc
+     */
     public static contextType = ValidatorContext;
+
+    /**
+     * @inheritDoc
+     */
     public context!: React.ContextType<typeof ValidatorContext>;
+
+    /**
+     * References to elements within the area to be validated
+     */
     private inputRefs: ValidationElement[] = [];
+
+    /**
+     * Indicates whether the area is dirty
+     */
     private dirty = false;
 
+    /**
+     * @inheritDoc
+     */
     public readonly state: ValidatorAreaState = {
         errors: []
     }
 
+    /**
+     * Default props when not provided in the component
+     */
     public static defaultProps: Partial<ValidatorAreaProps> = {
         rules: []
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public componentDidMount(): void {
+        const { addArea } = this.context;
+
+        addArea(this.getName(), this);
     }
 
     /**
@@ -58,6 +88,7 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                     rules,
                     ref ? ref.getAttribute('name') : this.getName()
                 );
+                validator.setArea(this);
 
                 this.dirty = !validator.validate();
 
@@ -72,15 +103,6 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                 }
             });
         })
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public componentDidMount(): void {
-        const { addArea } = this.context;
-
-        addArea(this.getName(), this);
     }
 
     private getName(): string {
@@ -135,7 +157,7 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                                 this.validate(ref);
                             },
                             ref: (node: ValidationElement) => {
-                                if (node) {
+                                if (node && !this.inputRefs.includes(node)) {
                                     ref = node;
                                     this.inputRefs.push(ref);
                                 }
@@ -172,7 +194,6 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
      */
     public render(): React.ReactNode {
         let { children } = this.props;
-        this.inputRefs = [];
 
         if (typeof children === 'function') {
             children = (children as (scope: AreaScope) => React.ReactNode)(

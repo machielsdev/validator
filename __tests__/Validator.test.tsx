@@ -1,5 +1,5 @@
 import { Rule } from '../src/Rule';
-import { Validator } from '../src';
+import { Validator } from '@/Validator';
 
 describe('test validator', () => {
     beforeEach(() => {
@@ -103,5 +103,20 @@ describe('test validator', () => {
     it('should merge rules', () => {
         const rules = Validator.mergeRules(['rule_one', 'rule_two'], 'rule_tree|rule_four', ['rule_five|rule_six']);
         expect(rules.length).toBe(6);
+    });
+
+    it('should throw an error when trying to get area when not in area', () => {
+        const throws = () => {
+            const validator = new Validator(
+                [
+                    document.createElement<'input'>('input')
+                ],
+                [],
+                'test'
+            );
+            validator.getArea();
+        }
+
+        expect(() => throws()).toThrowError('Areas are only available when validating React components.')
     })
 });
