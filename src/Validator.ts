@@ -19,12 +19,12 @@ export class Validator {
     /**
      * The elements to be validated
      */
-    private readonly elements: ValidationElement[] = [];
+    private readonly elements: ValidationElement[];
 
     /**
      * The rules to validate the elements with
      */
-    private readonly validationRules: RuleOptions = [];
+    private readonly validationRules: RuleOptions;
 
     /**
      * Validation errors when elements are invalid
@@ -34,7 +34,7 @@ export class Validator {
     /**
      * Name used to specify error messages
      */
-    private readonly name: string | null = null;
+    private readonly name: string;
 
     /**
      * Intl cache to prevent memory leaks
@@ -46,12 +46,15 @@ export class Validator {
      */
     private intl: IntlShape<string>;
 
+    /**
+     * Validator area used to access other areas and the provider
+     */
     private area?: ValidatorArea;
 
     public constructor(
         elements: ValidationElement[],
         rules: RuleOptions,
-        name: string | null,
+        name: string,
     ) {
         this.elements = elements;
         this.validationRules = rules;
