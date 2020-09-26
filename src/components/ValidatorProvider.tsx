@@ -4,6 +4,7 @@ import { RuleOptions } from '@/RuleOptions';
 import { ProviderScope } from '@/ProviderScope';
 import { ValidatorContext } from '@/ValidatorContext';
 import { ValidatorArea } from '@/components/ValidatorArea';
+import { ValidationElement } from '@/ValidationElement';
 
 export interface ValidatorProviderProps {
     rules?: RuleOptions;
@@ -63,6 +64,24 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
         };
     }
 
+    private getRefs(name?: string): ValidationElement[] {
+        const refs: ValidationElement[] = [];
+
+        if (name && Object.prototype.hasOwnProperty.call(this.state.areas, name)) {
+            this.state.areas[name].getInputRefs().forEach((ref: ValidationElement) => {
+                refs.push(ref);
+            })
+        } else if (name === undefined) {
+            Object.values(this.state.areas).forEach((area: ValidatorArea) => {
+                area.getInputRefs().forEach((ref) => {
+                    refs.push(ref);
+                });
+            });
+        }
+
+        return refs;
+    }
+
     /**
      * @inheritDoc
      */
@@ -85,7 +104,8 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
             <ValidatorContext.Provider
                 value={{
                     rules: rules || [],
-                    addArea: (name: string, ref: ValidatorArea): void => this.addArea(name, ref)
+                    addArea: (name: string, ref: ValidatorArea): void => this.addArea(name, ref),
+                    getRefs: (name?: string) => this.getRefs(name)
                 }}
             >
                 {children}

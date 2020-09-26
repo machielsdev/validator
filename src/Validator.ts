@@ -4,10 +4,11 @@ import {
     IntlCache,
     IntlShape
 } from '@formatjs/intl'
-import { Rule } from './Rule';
+import { Rule, RuleFunction, RuleObject } from '@/Rule';
 import { ValidationElement } from '@/ValidationElement';
 import { RuleOptions } from '@/RuleOptions';
 import { capitalize } from '@/utils/utils';
+import { ValidatorArea } from '@/components/ValidatorArea';
 
 export class Validator {
     /**
@@ -18,12 +19,12 @@ export class Validator {
     /**
      * The elements to be validated
      */
-    private readonly elements: ValidationElement[];
+    private elements: ValidationElement[] = [];
 
     /**
      * The rules to validate the elements with
      */
-    private readonly validationRules: RuleOptions;
+    private validationRules: RuleOptions = [];
 
     /**
      * Validation errors when elements are invalid
@@ -33,7 +34,7 @@ export class Validator {
     /**
      * Name used to specify error messages
      */
-    private readonly name: string | null;
+    private name: string | null = null;
 
     /**
      * Intl cache to prevent memory leaks
@@ -44,6 +45,8 @@ export class Validator {
      * Intl constructor to localize messages
      */
     private intl: IntlShape<string>;
+
+    private area?: ValidatorArea;
 
     public constructor(
         elements: ValidationElement[],
@@ -87,12 +90,21 @@ export class Validator {
     }
 
     /**
+     * Indicated whether a given rule name is a rule function
+     */
+    private static isRuleFunction(rule: string): boolean {
+        return typeof Validator.rules[rule] === 'function';
+    }
+
+    /**
      * Validate a specific rule
      */
     private validateRule(rule: string): boolean {
         const [ruleName, ruleArgs = ''] = rule.split(':');
         if (Validator.hasRule(ruleName)) {
-            const ruleObj = Validator.rules[ruleName];
+            const ruleObj: RuleObject = Validator.isRuleFunction(ruleName)
+                ? (Validator.rules[ruleName] as RuleFunction)(this) : Validator.rules[ruleName] as RuleObject;
+
             const ruleArgsArray = ruleArgs.split(',');
 
             if(!ruleObj.passed(this.elements, ...ruleArgsArray)) {
@@ -124,6 +136,24 @@ export class Validator {
      */
     public getErrors(): string[] {
         return this.errors;
+    }
+
+    public setArea(area: ValidatorArea): Validator {
+        this.area = area;
+
+        return this;
+    }
+
+    public getArea(): ValidatorArea {
+        if (this.area) {
+            return this.area;
+        }
+
+        throw new Error('Areas are only available when validating React components.');
+    }
+
+    public refs(name?: string): ValidationElement[] {
+        return this.getArea().context.getRefs(name);
     }
 
     /**

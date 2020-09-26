@@ -1,6 +1,15 @@
-import { ValidationElement } from './ValidationElement';
+import { Validator } from '@/Validator';
+import { ValidationElement } from '@/ValidationElement';
 
-export type Rule = {
+/**
+ * Function to access validator using the rule
+ */
+export type RuleFunction = (validator: Validator) => RuleObject;
+
+/**
+ * Object structure rules must implement
+ */
+export type RuleObject = {
     /**
      * Returns whether the rule passed with the given element(s)
      */
@@ -10,3 +19,5 @@ export type Rule = {
      */
     message(): string;
 }
+
+export type Rule = RuleObject | RuleFunction;
