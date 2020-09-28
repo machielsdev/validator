@@ -1,5 +1,4 @@
 import { Validator } from '@/Validator';
-import { ValidationElement } from '@/ValidationElement';
 
 /**
  * Function to access validator using the rule
@@ -13,7 +12,7 @@ export type RuleObject = {
     /**
      * Returns whether the rule passed with the given element(s)
      */
-    passed(elements: ValidationElement[], ...args: string[]): boolean;
+    passed(elements: HTMLElement[], ...args: string[]): boolean;
     /**
      * Message shown when the rule doesn't pass
      */

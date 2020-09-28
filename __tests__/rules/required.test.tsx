@@ -9,31 +9,7 @@ describe('test required rule', () => {
         Validator.extend('required', required);
     });
 
-    it('should falsely validate input', () => {
-        const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules="required">
-                <input name="test" />
-            </ValidatorArea>
-        );
-
-        area.find('input').simulate('blur');
-        expect(area.state().errors.length).toBe(1);
-        expect(area.state().errors[0]).toBe('Test is required');
-    });
-
-    it('should falsely validate textarea', () => {
-        const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules="required">
-                <textarea name="test" />
-            </ValidatorArea>
-        );
-
-        area.find('textarea').simulate('blur');
-        expect(area.state().errors.length).toBe(1);
-        expect(area.state().errors[0]).toBe('Test is required');
-    });
-
-    it('should falsely validate select', () => {
+    it('should falsely validate select with options', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="required">
                 <select name="test">
@@ -47,16 +23,23 @@ describe('test required rule', () => {
         expect(area.state().errors[0]).toBe('Test is required');
     });
 
-    it('should validate select', () => {
-        const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules="required">
-                <select name="test">
-                    <option value="foo">Choose...</option>
-                </select>
-            </ValidatorArea>
-        );
+    it('should always validate inputs and not validate non-inputs', () => {
+        const validator_input = new Validator([
+            document.createElement('input')
+        ],
+        ['required'],
+        'validator_input');
 
-        area.find('select').simulate('blur');
-        expect(area.state().errors.length).toBe(0);
+        const validator_progress = new Validator([
+            document.createElement('progress')
+        ],
+        ['required'],
+        'validate_progress');
+
+        validator_input.validate();
+        expect(validator_input.getErrors().length).toBe(1);
+
+        validator_progress.validate();
+        expect(validator_progress.getErrors().length).toBe(0);
     });
 });

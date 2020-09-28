@@ -1,22 +1,16 @@
-import { ValidationElement } from '../ValidationElement';
+import { getValue, isInputElement, isSelectElement } from '@/utils/dom';
 
 export default {
-    passed(elements: ValidationElement[]): boolean {
-        let passed = true;
+    passed(elements: HTMLElement[]): boolean {
+        return elements.every((element: HTMLElement) => {
+            if (isInputElement(element) || isSelectElement(element)) {
+                const value = getValue(element);
 
-        elements.forEach((element) => {
-            if (element instanceof HTMLInputElement
-                || element instanceof HTMLTextAreaElement
-            ) {
-                passed = !!element.value.trim().length;
+                return value && value.length;
             }
 
-            if (element instanceof HTMLSelectElement) {
-                passed = !!element.options[element.selectedIndex].value.length;
-            }
-        });
-
-        return passed;
+            return true;
+        })
     },
 
     message(): string {

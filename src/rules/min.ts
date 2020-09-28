@@ -1,22 +1,30 @@
-import { ValidationElement } from '../ValidationElement';
+import { getValue, isInputElement, isSelectElement } from '@/utils/dom';
+import { isNumeric } from '@/utils/utils';
+import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
 
 export default {
-    passed(elements: ValidationElement[], ...values: string[]): boolean {
-        let passed = true;
+    passed(elements: HTMLElement[], min: string): boolean {
+        if (!isNumeric(min)) {
+            throw new IncorrectArgumentTypeError(`min rule has incorrect argument ${min}. Expected a number.`);
+        }
 
-        elements.forEach((element) => {
-            if (element instanceof HTMLInputElement
-                || element instanceof HTMLTextAreaElement
-            ) {
-                passed = parseFloat(element.value.trim()) >= parseInt(values[0]);
+        return elements.every((element: HTMLElement) => {
+            if (isInputElement(element) || isSelectElement(element)) {
+                const value = getValue(element);
+
+                if (Array.isArray(value)) {
+                    return value.every((val: string) => {
+                        return isNumeric(val) && parseFloat(val) >= parseFloat(min);
+                    });
+                } else {
+                    return value
+                        && isNumeric(value)
+                        && parseFloat(value) >= parseFloat(min);
+                }
             }
 
-            if (element instanceof HTMLSelectElement) {
-                passed = parseFloat(element.options[element.selectedIndex].value) >= parseInt(values[0]);
-            }
-        });
-
-        return passed;
+            return true;
+        })
     },
     message(): string {
         return `{name} should be at least {0}`
