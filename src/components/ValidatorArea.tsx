@@ -172,6 +172,9 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
         );
     }
 
+    /**
+     * Indicates whether the given node is an element that is a "blurrable" type
+     */
     private elementCanBlur(node: React.ReactElement): boolean {
         return node.type === 'input' || node.type === 'textarea' || node.type === 'select';
     }
