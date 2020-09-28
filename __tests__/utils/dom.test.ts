@@ -1,4 +1,4 @@
-import { getValue, htmlCollectionToArray } from '@/utils/dom';
+import { getValue, htmlCollectionToArray, isInputElement, isSelectElement } from '@/utils/dom';
 
 describe('dom helpers test', () => {
     it('should convert HtmlCollection to array', () => {
@@ -32,6 +32,19 @@ describe('dom helpers test', () => {
         expect(getValue(select)).toEqual(expect.arrayContaining(['foo', 'bar']));
         expect(getValue(input)).toBe('baz');
         expect(getValue(div)).toBeNull();
+    });
 
-    })
+    it('should check whether an element is an input element', () => {
+        const input = document.createElement('input');
+        const textarea = document.createElement('textarea');
+
+        expect(isInputElement(input)).toBeTruthy();
+        expect(isInputElement(textarea)).toBeTruthy();
+    });
+
+    it('should check whether an element is an input element', () => {
+        const select = document.createElement('select');
+
+        expect(isSelectElement(select)).toBeTruthy();
+    });
 });

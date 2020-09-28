@@ -167,7 +167,7 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                     }
                 }
 
-                return child;
+                return child;m
             }
         );
     }
