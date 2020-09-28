@@ -11,7 +11,9 @@ import { ValidatorArea } from '@/components/ValidatorArea';
 
 export class Validator {
     public static VALIDATABLE_ELEMENTS: string[] = [
-        'a', 'audio', 'button', 'canvas', 'input', 'meter', 'select', 'textarea', 'output', 'progress']
+        'a', 'audio', 'button', 'canvas', 'input', 'meter', 'select', 'textarea', 'output', 'progress'
+    ];
+
     /**
      * Map containing the rule object belonging to a rule string
      */
