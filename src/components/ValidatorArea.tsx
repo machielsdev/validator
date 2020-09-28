@@ -2,7 +2,6 @@ import * as React from 'react';
 import { isFragment } from 'react-is';
 import { RuleOptions } from '@/RuleOptions';
 import { AreaScope } from '@/AreaScope';
-import { ValidationElement } from '@/ValidationElement';
 import { ValidatorContext } from '@/ValidatorContext';
 import { Validator } from '@/Validator';
 
@@ -22,7 +21,7 @@ interface ValidatorAreaState {
 
 interface ValidatorAreaComponentsProps {
     onBlur: () => void;
-    ref: React.RefObject<ValidationElement>;
+    ref: React.RefObject<HTMLElement>;
 }
 
 export class ValidatorArea extends React.Component<ValidatorAreaProps, ValidatorAreaState> {
@@ -39,7 +38,7 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
     /**
      * References to elements within the area to be validated
      */
-    private inputRefs: ValidationElement[] = [];
+    private inputRefs: HTMLElement[] = [];
 
     /**
      * Indicates whether the area is dirty
@@ -72,7 +71,7 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
     /**
      * Validate the area, or a given element when provided
      */
-    public validate(ref?: ValidationElement): Promise<boolean> {
+    public validate(ref?: HTMLElement): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             this.dirty = false;
             this.setState(() => ({
@@ -122,7 +121,7 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
     /**
      * Returns the input references within the area
      */
-    public getInputRefs(): ValidationElement[] {
+    public getInputRefs(): HTMLElement[] {
         return this.inputRefs;
     }
 
@@ -145,18 +144,20 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                     }
 
                     if (this.isValidatableNode(child)) {
-                        let ref: ValidationElement;
+                        let ref: HTMLElement;
 
                         return React.cloneElement<ValidatorAreaComponentsProps>(child, {
                             ...child.props,
-                            onBlur: () => {
+                            onBlur: (): void => {
                                 if (child.props.onBlur) {
                                     child.props.onBlur();
                                 }
 
-                                this.validate(ref);
+                                if (this.elementCanBlur(child)) {
+                                    this.validate(ref);
+                                }
                             },
-                            ref: (node: ValidationElement) => {
+                            ref: (node: HTMLElement) => {
                                 if (node && !this.inputRefs.includes(node)) {
                                     ref = node;
                                     this.inputRefs.push(ref);
@@ -171,11 +172,16 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
         );
     }
 
+    private elementCanBlur(node: React.ReactElement): boolean {
+        return node.type === 'input' || node.type === 'textarea' || node.type === 'select';
+    }
+
     /**
      * Indicates whether the node is validatable
      */
     private isValidatableNode(node: React.ReactElement): boolean {
-        return node.type === 'input' || node.type === 'textarea' || node.type === 'select';
+        return typeof node.type === 'string'
+            && Validator.VALIDATABLE_ELEMENTS.indexOf(node.type) !== -1;
     }
 
     /**

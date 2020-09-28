@@ -91,6 +91,17 @@ describe('test ValidatorProvider', () => {
         expect(area.state().errors[0]).toBe('Not passed');
     });
 
+    it('should not apply rules on blur when non-blurrable element', () => {
+        const area = mount<ValidatorArea, ValidatorAreaProps>(
+            <ValidatorArea rules="passes_not" name="test">
+                <canvas />
+            </ValidatorArea>
+        );
+
+        area.find('canvas').at(0).simulate('blur');
+        expect(area.state().errors.length).toBe(0);
+    });
+
     it('should render error when area dirty', async () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not">
@@ -238,5 +249,40 @@ describe('test ValidatorProvider', () => {
 
         area.find('input').simulate('blur');
         expect(mockFn).toBeCalled();
+    });
+
+    it('should get refs by type', async () => {
+        Validator.extend('test_types', (validator: Validator) => ({
+            passed(): boolean {
+                return validator.refs(undefined, HTMLInputElement).length === 1
+                    && validator.refs('test1', HTMLTextAreaElement).length === 1
+                    && validator.refs('test1').length === 1
+                    && validator.refs('test1', HTMLProgressElement).length === 0;
+            },
+            message(): string {
+                return 'test';
+            }
+        }))
+        const mockFn = jest.fn();
+
+        const provider = mount<ValidatorProvider, ValidatorProviderProps>(
+            <ValidatorProvider rules="test_types">
+                {({ validate }: ProviderScope) => (
+                    <>
+                        <ValidatorArea name="test1">
+                            <textarea value="" />
+                        </ValidatorArea>
+                        <ValidatorArea>
+                            <input value="" name="test2" />
+                        </ValidatorArea>
+                        <button onClick={() => validate(mockFn)} />
+                    </>
+                )}
+            </ValidatorProvider>
+        );
+
+        provider.find('button').simulate('click');
+        await tick();
+        expect(mockFn).toHaveBeenCalled();
     });
 })

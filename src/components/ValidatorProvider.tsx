@@ -4,7 +4,6 @@ import { RuleOptions } from '@/RuleOptions';
 import { ProviderScope } from '@/ProviderScope';
 import { ValidatorContext } from '@/ValidatorContext';
 import { ValidatorArea } from '@/components/ValidatorArea';
-import { ValidationElement } from '@/ValidationElement';
 
 export interface ValidatorProviderProps {
     rules?: RuleOptions;
@@ -67,17 +66,21 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
     /**
      * Gets a list of validation element refs, optionally specified by area name
      */
-    private getRefs(name?: string): ValidationElement[] {
-        const refs: ValidationElement[] = [];
+    private getRefs(name?: string, type?: typeof HTMLElement): HTMLElement[] {
+        const refs: HTMLElement[] = [];
 
         if (name && Object.prototype.hasOwnProperty.call(this.state.areas, name)) {
-            this.state.areas[name].getInputRefs().forEach((ref: ValidationElement) => {
-                refs.push(ref);
+            this.state.areas[name].getInputRefs().forEach((ref: HTMLElement) => {
+                if (!type || (type && ref instanceof type)) {
+                    refs.push(ref);
+                }
             })
         } else if (name === undefined) {
             Object.values(this.state.areas).forEach((area: ValidatorArea) => {
                 area.getInputRefs().forEach((ref) => {
-                    refs.push(ref);
+                    if (!type || (type && ref instanceof type)) {
+                        refs.push(ref);
+                    }
                 });
             });
         }
@@ -108,7 +111,7 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
                 value={{
                     rules: rules || [],
                     addArea: (name: string, ref: ValidatorArea): void => this.addArea(name, ref),
-                    getRefs: (name?: string) => this.getRefs(name)
+                    getRefs: (name?: string, type?: typeof HTMLElement) => this.getRefs(name, type)
                 }}
             >
                 {children}

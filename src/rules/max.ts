@@ -1,22 +1,30 @@
-import { ValidationElement } from '../ValidationElement';
+import { isNumeric } from '@/utils/utils';
+import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
+import { getValue, isInputElement, isSelectElement } from '@/utils/dom';
 
 export default {
-    passed(elements: ValidationElement[], value: string): boolean {
-        let passed = true;
+    passed(elements: HTMLElement[], max: string): boolean {
+        if (!isNumeric(max)) {
+            throw new IncorrectArgumentTypeError(`max rule has incorrect argument ${max}. Expected a number.`);
+        }
 
-        elements.forEach((element) => {
-            if (element instanceof HTMLInputElement
-                || element instanceof HTMLTextAreaElement
-            ) {
-                passed = parseFloat(element.value.trim()) <= parseInt(value, 10);
+        return elements.every((element: HTMLElement) => {
+            if (isInputElement(element) || isSelectElement(element)) {
+                const value = getValue(element);
+
+                if (Array.isArray(value)) {
+                    return value.every((val: string) => {
+                        return isNumeric(val) && parseFloat(val) <= parseFloat(max);
+                    });
+                } else {
+                    return value
+                        && isNumeric(value)
+                        && parseFloat(value) <= parseFloat(max);
+                }
             }
 
-            if (element instanceof HTMLSelectElement) {
-                passed = parseFloat(element.options[element.selectedIndex].value) <= parseInt(value, 10);
-            }
-        });
-
-        return passed;
+            return true;
+        })
     },
     message(): string {
         return `{name} should be not greater than {0}`

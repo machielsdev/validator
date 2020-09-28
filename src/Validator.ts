@@ -5,12 +5,13 @@ import {
     IntlShape
 } from '@formatjs/intl'
 import { Rule, RuleFunction, RuleObject } from '@/Rule';
-import { ValidationElement } from '@/ValidationElement';
 import { RuleOptions } from '@/RuleOptions';
 import { capitalize } from '@/utils/utils';
 import { ValidatorArea } from '@/components/ValidatorArea';
 
 export class Validator {
+    public static VALIDATABLE_ELEMENTS: string[] = [
+        'a', 'audio', 'button', 'canvas', 'input', 'meter', 'select', 'textarea', 'output', 'progress']
     /**
      * Map containing the rule object belonging to a rule string
      */
@@ -19,7 +20,7 @@ export class Validator {
     /**
      * The elements to be validated
      */
-    private readonly elements: ValidationElement[];
+    private readonly elements: HTMLElement[];
 
     /**
      * The rules to validate the elements with
@@ -52,7 +53,7 @@ export class Validator {
     private area?: ValidatorArea;
 
     public constructor(
-        elements: ValidationElement[],
+        elements: HTMLElement[],
         rules: RuleOptions,
         name: string | null,
     ) {
@@ -164,8 +165,8 @@ export class Validator {
     /**
      * Gets a list of validation element refs, optionally specified by area name
      */
-    public refs(name?: string): ValidationElement[] {
-        return this.getArea().context.getRefs(name);
+    public refs(name?: string, type?: typeof HTMLElement): HTMLElement[] {
+        return this.getArea().context.getRefs(name, type);
     }
 
     /**
