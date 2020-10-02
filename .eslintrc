@@ -1,0 +1,28 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint/eslint-plugin"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+    },
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "ignorePatterns": ["dist", "setupTests.ts", "babel.config.js"],
+    "rules": {
+        "comma-dangle": "off",
+        "class-methods-use-this": "off",
+        "import/prefer-default-export": "off",
+        "import/no-dynamic-require": "off",
+        "global-require": "off",
+        "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+        "@typescript-eslint/indent": ["error", 4]
+    }
+}
