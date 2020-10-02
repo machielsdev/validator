@@ -1,68 +1,173 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Coderan: Validator
+The smart React element validator
 
-## Available Scripts
+### Introduction
+The goal of this package, is to simplify the struggle of validating elements in React, with a simple system which allows
+users to add their own rules.  
+The system communicates directly with the elements in the DOM, and is therefore widely compatible with other libraries,
+like [Bootstrap](https://react-bootstrap.github.io/).
 
-In the project directory, you can run:
+### The concept
+Validator consists of two main elements, an `Area` and a `Provider`. Areas are a sort of wrappers having elements that
+need validation as their children. An area scans the underlying components and elements and indexes validatable elements.
+  
+Providers on the other hand are wrappers around areas, and allow them to communicate between each other. This communication
+is needed in order to match with values in other areas. It can also be used to validate all areas at once, and preventing
+actions to happen while not all areas are valid. 
 
-### `yarn start`
+### How to use
+First, start with adding rules to the validator in order to use them. There are some rules pre-made, but more specific
+rules you have to create yourself.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```javascript
+import { Validator } from '@coderan/validator';
+import { min } from '@coderan/rules/min';
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Validator.extend('min', min);
+```
 
-### `yarn test`
+#### Area
+Basic usage:
+```jsx
+import { ValidatorArea } from '@coderan/validator';
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<ValidatorArea rules="required">
+    <input name="username" />
+</ValidatorArea>
+```
+When the input is focused and blurred, the `required` rule is called.
 
-### `yarn build`
+Every area needs a name. This name is used to index areas in the provider, and make meaningful error messages. When using
+multiple inputs within an area, i.e. when validating a multi-input date of birth, `name` prop is required when defining
+the `ValidatorArea` component. Like so:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```jsx
+import { ValidatorArea } from '@coderan/validator';
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+<ValidatorArea rules="min" name="dob">
+    <input name="day" />
+    <input name="month" />
+    <input name="year" />
+</ValidatorArea>
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Showing errors:
+```jsx
+import { ValidatorArea } from '@coderan/validator';
 
-### `yarn eject`
+<ValidatorArea rules="min" name="dob">
+    {({ errors }) => (
+        <>
+            <input name="username" />
+            { errors.length && <span>{errors[0]}</span> }
+        </>
+    )}
+</ValidatorArea>
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Provider
+Basic usage:
+```jsx
+import { ValidatorProvider, ValidatorArea } from '@coderan/validator';
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<ValidatorProvider>
+    {({ validate }) => (
+        <>
+            <ValidatorArea rules="min" name="dob">
+                <input name="day" />
+                <input name="month" />
+                <input name="year" />
+            </ValidatorArea>
+            <ValidatorArea rules="min" name="dob">
+                <input name="day" />
+                <input name="month" />
+                <input name="year" />
+            </ValidatorArea>
+            <button
+                onClick={() => validate(() => alert('valid'))}>Check</button>
+        </>
+    )}
+</ValidatorProvider>
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+It is possible to give the validator a `rules` prop as well, whose rules apply to all underlying areas:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```jsx
+import { ValidatorProvider, ValidatorArea } from '@coderan/validator';
 
-## Learn More
+<ValidatorProvider rules="required">
+    <ValidatorArea rules="min:5">
+        {/* on blur, both required and min rules are applied */}
+        <input name="username" /> 
+    </ValidatorArea>
+</ValidatorProvider>
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Adding rules
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+With access to validator
+```javascript
+import { Validator } from '@coderan/validator'
+Validator.extend('test_types', (validator: Validator) => ({
+    passed(): boolean {
+        return validator.refs(undefined, HTMLInputElement).length === 1
+            && validator.refs('test1', HTMLTextAreaElement).length === 1
+            && validator.refs('test1').length === 1
+            && validator.refs('test1', HTMLProgressElement).length === 0;
+    },
+    message(): string {
+        return 'test';
+    }
+}));
+```
 
-### Code Splitting
+or without
+```javascript
+import { getValue, isInputElement, isSelectElement } from '@/utils/dom';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+export default {
+    passed(elements: HTMLElement[]): boolean {
+        return elements.every((element: HTMLElement) => {
+            if (isInputElement(element) || isSelectElement(element)) {
+                const value = getValue(element);
 
-### Analyzing the Bundle Size
+                return value && value.length;
+            }
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+            return true;
+        })
+    },
 
-### Making a Progressive Web App
+    message(): string {
+        return `{name} is required`;
+    }
+};
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+You can create your own rules, as long as it follows this interface:
+```typescript
+import { Validator } from '@coderan/validator';
 
-### Advanced Configuration
+/**
+ * Function to access validator using the rule
+ */
+declare type RuleFunction = (validator: Validator) => RuleObject;
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+/**
+ * Object structure rules must implement
+ */
+declare type RuleObject = {
+    /**
+     * Returns whether the rule passed with the given element(s)
+     */
+    passed(elements: HTMLElement[], ...args: string[]): boolean;
+    /**
+     * Message shown when the rule doesn't pass
+     */
+    message(): string;
+}
 
-### Deployment
+export type Rule = RuleObject | RuleFunction;
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Happy Coding!

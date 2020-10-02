@@ -11,10 +11,15 @@
         "react-dom": "^16.13.1",
         "react-is": "^16.13.1"
     },
+    "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsc -p tsconfig-build.json",
         "test": "jest --config=jest.config.json",
         "test-coverage": "jest --config=jest.config.json --collectCoverage"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/machielsdev/validator"
     },
     "eslintConfig": {
         "extends": "react-app"
