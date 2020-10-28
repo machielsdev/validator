@@ -54,14 +54,21 @@ export class Validator {
      */
     private area?: ValidatorArea;
 
+    /**
+     * Name used to overwrite name attribute, to allow messages to be more specific
+     */
+    private validationName?: string;
+
     public constructor(
         elements: HTMLElement[],
         rules: RuleOptions,
         name: string | null,
+        validationName?: string
     ) {
         this.elements = elements;
         this.validationRules = rules;
         this.name = name;
+        this.validationName = validationName;
 
         this.intlCache = createIntlCache();
         this.intl = this.createIntl();
@@ -132,7 +139,7 @@ export class Validator {
             id: message,
             defaultMessage: message
         }, {
-            name: this.name,
+            name: this.validationName || this.name,
             ...ruleArgs
         }));
     }
