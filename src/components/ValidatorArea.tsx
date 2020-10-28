@@ -9,6 +9,7 @@ export interface ValidatorAreaProps {
     rules?: RuleOptions;
     name?: string;
     children: React.ReactNode | ((scope: AreaScope) => React.ReactNode);
+    validationName?: string;
 }
 
 export interface ValidatorAreaPropsWithDefault extends ValidatorAreaProps {
@@ -77,7 +78,10 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
             this.setState(() => ({
                 errors: []
             }), () => {
-                const { rules: propRules } = this.props as ValidatorAreaPropsWithDefault;
+                const {
+                    rules: propRules,
+                    validationName
+                } = this.props as ValidatorAreaPropsWithDefault;
                 const { rules: contextRules } = this.context;
                 const rules = Validator.mergeRules(propRules, contextRules);
                 const refs = ref ? [ref] : this.inputRefs;
@@ -85,7 +89,8 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                 const validator = new Validator(
                     refs,
                     rules,
-                    ref ? ref.getAttribute('name') : this.getName()
+                    ref ? ref.getAttribute('name') : this.getName(),
+                    validationName
                 );
                 validator.setArea(this);
 

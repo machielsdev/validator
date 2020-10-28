@@ -173,4 +173,19 @@ declare type RuleObject = {
 export type Rule = RuleObject | RuleFunction;
 ```
 
+Perhaps you would like to use a different name for the message than the `name`-attribute. That's perfectly fine! 
+```tsx
+import { ValidatorArea } from '@coderan/validator';
+
+<ValidatorArea rules="required" validationName="Surname">
+    {({ errors }) => (
+        <>
+            <input name="username" />
+            { errors.length && <span>{errors[0]}</span> }
+        </>
+    )}
+</ValidatorArea>
+```
+and when no value is present in the input, a message like "Surname is required" will appear. 
+
 ### Happy Coding!

@@ -285,4 +285,24 @@ describe('test ValidatorProvider', () => {
         await tick();
         expect(mockFn).toHaveBeenCalled();
     });
+
+    it('should use validation name when provided', () => {
+        Validator.extend('passes_not', {
+            passed(): boolean {
+                return false;
+            },
+            message(): string {
+                return '{name} not passed';
+            }
+        });
+
+        const area = mount<ValidatorArea, ValidatorAreaProps>(
+            <ValidatorArea validationName="Foo" rules="passes_not">
+                <input name="test" />
+            </ValidatorArea>
+        );
+
+        area.find('input').at(0).simulate('blur');
+        expect(area.state().errors[0]).toBe('Foo not passed');
+    });
 })
