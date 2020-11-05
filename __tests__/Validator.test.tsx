@@ -118,5 +118,28 @@ describe('test validator', () => {
         }
 
         expect(() => throws()).toThrowError('Areas are only available when validating React components.')
+    });
+
+    it('should be able to check if the value is required', () => {
+        Validator.extend('check_if_required', (validator: Validator) => ({
+            passed(): boolean {
+                return validator.isRequired();
+            },
+            message(): string {
+                return 'Value is required'
+            }
+        }));
+
+        const validator = new Validator(
+            [
+                document.createElement<'input'>('input')
+            ],
+            ['required', 'check_if_required'],
+            'test'
+        );
+
+        validator.validate();
+
+        expect(validator.getErrors()[0]).toBe('Test is required');
     })
 });

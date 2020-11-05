@@ -8,6 +8,7 @@ import { Rule, RuleFunction, RuleObject } from '@/Rule';
 import { RuleOptions } from '@/RuleOptions';
 import { capitalize } from '@/utils/utils';
 import { ValidatorArea } from '@/components/ValidatorArea';
+import required from './rules/required';
 
 export class Validator {
     public static VALIDATABLE_ELEMENTS: string[] = [
@@ -17,7 +18,9 @@ export class Validator {
     /**
      * Map containing the rule object belonging to a rule string
      */
-    public static rules: Record<string, Rule> = {};
+    public static rules: Record<string, Rule> = {
+        required
+    };
 
     /**
      * The elements to be validated
@@ -83,20 +86,21 @@ export class Validator {
         }, this.intlCache);
     }
 
+    private getRuleList(): string[] {
+        if (typeof this.validationRules === 'string') {
+            return this.validationRules.split('|');
+        }
+
+        return this.validationRules;
+    }
+
     /**
      * Validate the elements
      */
     public validate(): boolean {
-        let ruleList: string[];
         this.errors = [];
 
-        if (typeof this.validationRules === 'string') {
-            ruleList = this.validationRules.split('|');
-        } else {
-            ruleList = this.validationRules;
-        }
-
-        return !ruleList
+        return !this.getRuleList()
             .map((rule: string) => this.validateRule(rule))
             .filter((passed: boolean) => !passed)
             .length;
@@ -114,9 +118,11 @@ export class Validator {
      */
     private validateRule(rule: string): boolean {
         const [ruleName, ruleArgs = ''] = rule.split(':');
+
         if (Validator.hasRule(ruleName)) {
             const ruleObj: RuleObject = Validator.isRuleFunction(ruleName)
-                ? (Validator.rules[ruleName] as RuleFunction)(this) : Validator.rules[ruleName] as RuleObject;
+                ? (Validator.rules[ruleName] as RuleFunction)(this)
+                : Validator.rules[ruleName] as RuleObject;
 
             const ruleArgsArray = ruleArgs.split(',');
 
@@ -169,6 +175,10 @@ export class Validator {
         }
 
         throw new Error('Areas are only available when validating React components.');
+    }
+
+    public isRequired(): boolean {
+        return this.getRuleList().indexOf('required') !== -1;
     }
 
     /**
