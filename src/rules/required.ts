@@ -4,9 +4,9 @@ export default {
     passed(elements: HTMLElement[]): boolean {
         return elements.every((element: HTMLElement) => {
             if (isInputElement(element) || isSelectElement(element)) {
-                const value = getValue(element);
+                const value = getValue(element).filter(Boolean);
 
-                return value && value.length;
+                return value.length;
             }
 
             return true;

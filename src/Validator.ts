@@ -94,6 +94,10 @@ export class Validator {
         return this.validationRules;
     }
 
+    public get required(): boolean {
+        return this.getRuleList().indexOf('required') !== -1;
+    }
+
     /**
      * Validate the elements
      */
@@ -175,10 +179,6 @@ export class Validator {
         }
 
         throw new Error('Areas are only available when validating React components.');
-    }
-
-    public isRequired(): boolean {
-        return this.getRuleList().indexOf('required') !== -1;
     }
 
     /**

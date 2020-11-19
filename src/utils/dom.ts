@@ -28,9 +28,9 @@ const htmlCollectionToArray = <T extends Element>(collection: HTMLCollectionOf<T
 /**
  * Returns the value of the element, when it exists
  */
-const getValue = (element: HTMLElement): string | string[] | null => {
+const getValue = (element: HTMLElement): string[] => {
     if (isInputElement(element)) {
-        return element.value;
+        return [element.value];
     }
 
     if (isSelectElement(element)) {
@@ -39,7 +39,7 @@ const getValue = (element: HTMLElement): string | string[] | null => {
             .filter(Boolean);
     }
 
-    return null;
+    return [];
 }
 
 export {

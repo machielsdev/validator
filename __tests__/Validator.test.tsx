@@ -121,18 +121,20 @@ describe('test validator', () => {
     });
 
     it('should be able to check if the value is required', () => {
+        const input = document.createElement<'input'>('input');
+        input.value = 'test';
         Validator.extend('check_if_required', (validator: Validator) => ({
             passed(): boolean {
-                return validator.isRequired();
+                return !validator.required;
             },
             message(): string {
-                return 'Value is required'
+                return 'Value is false negative required'
             }
         }));
 
         const validator = new Validator(
             [
-                document.createElement<'input'>('input')
+                input
             ],
             ['required', 'check_if_required'],
             'test'
@@ -140,6 +142,6 @@ describe('test validator', () => {
 
         validator.validate();
 
-        expect(validator.getErrors()[0]).toBe('Test is required');
+        expect(validator.getErrors()[0]).toBe('Value is false negative required');
     })
 });
