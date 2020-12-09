@@ -16,7 +16,7 @@ describe('test min rule', () => {
         const throwsArgumentError = () => {
             const validator = new Validator([
                 input
-            ], ['min:foo'],
+            ], ['required', 'min:foo'],
             'validate_throws'
             );
             validator.validate();
@@ -25,7 +25,7 @@ describe('test min rule', () => {
         const validator_input = new Validator([
             input
         ],
-        ['min:6'],
+        ['required', 'min:6'],
         'validator_input');
 
         const progress = document.createElement('progress');
@@ -34,7 +34,7 @@ describe('test min rule', () => {
         const validator_progress = new Validator([
             progress
         ],
-        ['min:4'],
+        ['required', 'min:4'],
         'validate_progress');
 
         expect(() => throwsArgumentError()).toThrowError('min rule has incorrect argument foo. Expected a number.')

@@ -1,6 +1,6 @@
-import { isNumeric } from '@/utils/utils';
+import { isNumeric } from '@/common/utils';
 import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
-import { getValue, isInputElement, isSelectElement } from '@/utils/dom';
+import { getValue, isInputElement, isSelectElement } from '@/common/dom';
 
 export default {
     passed(elements: HTMLElement[], max: string): boolean {
@@ -23,4 +23,4 @@ export default {
     message(): string {
         return `{name} should be not greater than {0}`
     }
-}
+};

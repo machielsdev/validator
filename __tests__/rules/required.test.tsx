@@ -23,23 +23,56 @@ describe('test required rule', () => {
         expect(area.state().errors[0]).toBe('Test is required');
     });
 
-    it('should always validate inputs and not validate non-inputs', () => {
+    it('should always validate validatable and not validate non-validatable', () => {
+        const input = document.createElement('input');
+        const meter = document.createElement('meter');
+        const output = document.createElement('output');
+        const progress = document.createElement('progress');
+        const div = document.createElement('div');
+
         const validator_input = new Validator([
-            document.createElement('input')
+            input
+        ],
+        ['required'],
+        'validator_input');
+
+        const validator_meter = new Validator([
+            meter
+        ],
+        ['required'],
+        'validator_input');
+
+        const validator_output = new Validator([
+            output
         ],
         ['required'],
         'validator_input');
 
         const validator_progress = new Validator([
-            document.createElement('progress')
+            progress
         ],
         ['required'],
-        'validate_progress');
+        'validator_input');
+
+        const validator_div = new Validator([
+            div
+        ],
+        ['required'],
+        'validator_input');
 
         validator_input.validate();
         expect(validator_input.getErrors().length).toBe(1);
 
+        validator_meter.validate();
+        expect(validator_meter.getErrors().length).toBe(1);
+
+        validator_output.validate();
+        expect(validator_output.getErrors().length).toBe(1);
+
         validator_progress.validate();
-        expect(validator_progress.getErrors().length).toBe(0);
+        expect(validator_progress.getErrors().length).toBe(1);
+
+        validator_div.validate();
+        expect(validator_div.getErrors().length).toBe(0);
     });
 });

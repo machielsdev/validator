@@ -90,10 +90,10 @@ describe('test ValidatorProvider', () => {
                 {({ validate }) => (
                     <>
                         <ValidatorArea rules="passes_not" name="test1">
-                            <input value="" />
+                            <input value="test" />
                         </ValidatorArea>
                         <ValidatorArea rules="passes_not" name="test2">
-                            <input value="" />
+                            <input value="test" />
                         </ValidatorArea>
                         <button onClick={() => validate(mockFn)} />
                     </>

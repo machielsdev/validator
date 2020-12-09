@@ -1,5 +1,5 @@
-import { getValue, isInputElement, isSelectElement } from '@/utils/dom';
-import { isNumeric } from '@/utils/utils';
+import { getValue, isInputElement, isSelectElement } from '@/common/dom';
+import { isNumeric } from '@/common/utils';
 import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
 
 export default {
@@ -23,4 +23,4 @@ export default {
     message(): string {
         return `{name} should be at least {0}`
     }
-}
+};
