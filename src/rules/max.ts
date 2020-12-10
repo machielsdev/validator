@@ -1,6 +1,13 @@
 import { isNumeric } from '@/common/utils';
 import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
-import { getValue, isInputElement, isSelectElement } from '@/common/dom';
+import {
+    getValue,
+    isInputElement,
+    isMeterElement,
+    isOutputElement,
+    isProgressElement,
+    isSelectElement
+} from '@/common/dom';
 
 export default {
     passed(elements: HTMLElement[], max: string): boolean {
@@ -9,7 +16,13 @@ export default {
         }
 
         return elements.every((element: HTMLElement) => {
-            if (isInputElement(element) || isSelectElement(element)) {
+            if (
+                isInputElement(element)
+                || isSelectElement(element)
+                || isProgressElement(element)
+                || isMeterElement(element)
+                || isOutputElement(element)
+            ) {
                 const value = getValue(element);
 
                 return value.every((val: string) => {

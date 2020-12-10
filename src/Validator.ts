@@ -9,7 +9,7 @@ import { RuleOptions } from '@/RuleOptions';
 import { capitalize } from '@/common/utils';
 import { ValidatorArea } from '@/components/ValidatorArea';
 import required from './rules/required';
-import { getValue, isAudioElement } from '@/common/dom';
+import { getValue, isCanvasElement } from '@/common/dom';
 
 export class Validator {
     public static VALIDATABLE_ELEMENTS: string[] = [
@@ -159,7 +159,7 @@ export class Validator {
         }
 
         return !!(getValue(element).length
-            || isAudioElement(element)
+            || isCanvasElement(element)
         );
     }
 

@@ -6,10 +6,10 @@ const isInputElement = (element: HTMLElement): element is HTMLInputElement|HTMLT
 }
 
 /**
- * Returns whether element is an audio element
+ * Returns whether element is an canvas element
  */
-const isAudioElement = (element: HTMLElement): element is HTMLAudioElement => {
-    return element instanceof HTMLAudioElement;
+const isCanvasElement = (element: HTMLElement): element is HTMLCanvasElement => {
+    return element instanceof HTMLCanvasElement;
 }
 
 /**
@@ -78,7 +78,7 @@ const getValue = (element: HTMLElement): string[] => {
 export {
     isInputElement,
     isSelectElement,
-    isAudioElement,
+    isCanvasElement,
     isMeterElement,
     isOutputElement,
     isProgressElement,
