@@ -43,13 +43,16 @@ describe('test validator', () => {
 
         Validator.extend('testRule', rule);
 
-        expect(Validator.hasRule('testRule')).toBeTruthy();
+        expect(Validator.ruleExists('testRule')).toBeTruthy();
     });
 
     it('should validate rules as string', () => {
+        const input = document.createElement<'input'>('input');
+        input.value = 'test';
+
         const validator = new Validator(
             [
-                document.createElement<'input'>('input')
+                input
             ],
             'rule_one|rule_two',
             'test'
@@ -60,9 +63,11 @@ describe('test validator', () => {
     });
 
     it('should validate rules as array', () => {
+        const input = document.createElement<'input'>('input');
+        input.value = 'test';
         const validator = new Validator(
             [
-                document.createElement<'input'>('input')
+                input
             ],
             ['rule_one', 'rule_two'],
             'test'
@@ -73,9 +78,12 @@ describe('test validator', () => {
     });
 
     it('should validate with parameters', () => {
+        const input = document.createElement<'input'>('input');
+        input.value = 'test';
+
         const validator = new Validator(
             [
-                document.createElement<'input'>('input')
+                input
             ],
             ['rule_with_params:1,2,3,4'],
             'test'
@@ -86,10 +94,12 @@ describe('test validator', () => {
     });
 
     it('throws an exception when rule is not found', () => {
+        const input = document.createElement<'input'>('input');
+        input.value = 'test';
         const throws = () => {
             const validator = new Validator(
                 [
-                    document.createElement<'input'>('input')
+                    input
                 ],
                 ['not_existing_rule'],
                 'test'
@@ -118,5 +128,34 @@ describe('test validator', () => {
         }
 
         expect(() => throws()).toThrowError('Areas are only available when validating React components.')
+    });
+
+    it('should be able to check if the value is required', () => {
+        const input = document.createElement<'input'>('input');
+        input.value = 'test';
+        Validator.extend('check_if_required', (validator: Validator) => ({
+            passed(elements: HTMLElement[]): boolean {
+                return !elements.every((element: HTMLElement) => validator.shouldValidate(element));
+            },
+            message(): string {
+                return 'Value is false negative required'
+            }
+        }));
+
+        const validator = new Validator(
+            [
+                input
+            ],
+            ['required', 'check_if_required'],
+            'test'
+        );
+
+        validator.validate();
+
+        expect(validator.getErrors()[0]).toBe('Value is false negative required');
+    })
+
+    it('should return empty array when no refs provided', () => {
+
     })
 });

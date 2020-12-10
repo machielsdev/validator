@@ -6,18 +6,22 @@ import {
 } from '@formatjs/intl'
 import { Rule, RuleFunction, RuleObject } from '@/Rule';
 import { RuleOptions } from '@/RuleOptions';
-import { capitalize } from '@/utils/utils';
+import { capitalize } from '@/common/utils';
 import { ValidatorArea } from '@/components/ValidatorArea';
+import required from './rules/required';
+import { getValue, isCanvasElement } from '@/common/dom';
 
 export class Validator {
     public static VALIDATABLE_ELEMENTS: string[] = [
-        'a', 'audio', 'button', 'canvas', 'input', 'meter', 'select', 'textarea', 'output', 'progress'
+        'canvas', 'input', 'meter', 'select', 'textarea', 'output', 'progress'
     ];
 
     /**
      * Map containing the rule object belonging to a rule string
      */
-    public static rules: Record<string, Rule> = {};
+    public static rules: Record<string, Rule> = {
+        required
+    };
 
     /**
      * The elements to be validated
@@ -84,22 +88,34 @@ export class Validator {
     }
 
     /**
+     * Get the rule list as array
+     */
+    private getRuleList(): string[] {
+        if (typeof this.validationRules === 'string') {
+            return this.validationRules.split('|');
+        }
+
+        return this.validationRules;
+    }
+
+    public hasRule(rule: string): boolean {
+        return this.getRuleList().indexOf(rule) !== -1;
+    }
+
+    /**
      * Validate the elements
      */
     public validate(): boolean {
-        let ruleList: string[];
         this.errors = [];
 
-        if (typeof this.validationRules === 'string') {
-            ruleList = this.validationRules.split('|');
-        } else {
-            ruleList = this.validationRules;
+        if (this.hasValidatableElements()) {
+            return !this.getRuleList()
+                .map((rule: string) => this.validateRule(rule))
+                .filter((passed: boolean) => !passed)
+                .length;
         }
 
-        return !ruleList
-            .map((rule: string) => this.validateRule(rule))
-            .filter((passed: boolean) => !passed)
-            .length;
+        return true;
     }
 
     /**
@@ -114,9 +130,11 @@ export class Validator {
      */
     private validateRule(rule: string): boolean {
         const [ruleName, ruleArgs = ''] = rule.split(':');
-        if (Validator.hasRule(ruleName)) {
+
+        if (Validator.ruleExists(ruleName)) {
             const ruleObj: RuleObject = Validator.isRuleFunction(ruleName)
-                ? (Validator.rules[ruleName] as RuleFunction)(this) : Validator.rules[ruleName] as RuleObject;
+                ? (Validator.rules[ruleName] as RuleFunction)(this)
+                : Validator.rules[ruleName] as RuleObject;
 
             const ruleArgsArray = ruleArgs.split(',');
 
@@ -129,6 +147,20 @@ export class Validator {
         }
 
         throw new Error(`Validation rule ${rule} not found.`);
+    }
+
+    public hasValidatableElements(): boolean {
+        return this.elements.some((element: HTMLElement) => this.shouldValidate(element));
+    }
+
+    public shouldValidate(element: HTMLElement): boolean {
+        if (this.hasRule('required')) {
+            return true;
+        }
+
+        return !!(getValue(element).length
+            || isCanvasElement(element)
+        );
     }
 
     /*
@@ -204,7 +236,7 @@ export class Validator {
     /**
      * Check whether the validator has a rule
      */
-    public static hasRule(name: string): boolean {
+    public static ruleExists(name: string): boolean {
         return Object.prototype.hasOwnProperty.call(Validator.rules, name);
     }
 }

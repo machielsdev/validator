@@ -1,6 +1,13 @@
-import { isNumeric } from '@/utils/utils';
+import { isNumeric } from '@/common/utils';
 import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
-import { getValue, isInputElement, isSelectElement } from '@/utils/dom';
+import {
+    getValue,
+    isInputElement,
+    isMeterElement,
+    isOutputElement,
+    isProgressElement,
+    isSelectElement
+} from '@/common/dom';
 
 export default {
     passed(elements: HTMLElement[], max: string): boolean {
@@ -9,18 +16,18 @@ export default {
         }
 
         return elements.every((element: HTMLElement) => {
-            if (isInputElement(element) || isSelectElement(element)) {
+            if (
+                isInputElement(element)
+                || isSelectElement(element)
+                || isProgressElement(element)
+                || isMeterElement(element)
+                || isOutputElement(element)
+            ) {
                 const value = getValue(element);
 
-                if (Array.isArray(value)) {
-                    return value.every((val: string) => {
-                        return isNumeric(val) && parseFloat(val) <= parseFloat(max);
-                    });
-                } else {
-                    return value
-                        && isNumeric(value)
-                        && parseFloat(value) <= parseFloat(max);
-                }
+                return value.every((val: string) => {
+                    return isNumeric(val) && parseFloat(val) <= parseFloat(max);
+                });
             }
 
             return true;
@@ -29,4 +36,4 @@ export default {
     message(): string {
         return `{name} should be not greater than {0}`
     }
-}
+};

@@ -4,6 +4,7 @@ import { Validator } from '@/Validator';
 import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
 import ValidatorProvider, { ValidatorProviderProps } from '@/components/ValidatorProvider';
 import { ProviderScope } from '@/ProviderScope';
+import required from '@/rules/required';
 
 const tick = () => {
     return new Promise(resolve => {
@@ -21,6 +22,7 @@ describe('test ValidatorProvider', () => {
                 return 'not passed';
             }
         });
+        Validator.extend('required', required)
     });
 
     it('should render input', () => {
@@ -83,7 +85,7 @@ describe('test ValidatorProvider', () => {
     it('should apply rules on blur', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not">
-                <input name="test" />
+                <input name="test" value="test" />
             </ValidatorArea>
         );
 
@@ -107,7 +109,7 @@ describe('test ValidatorProvider', () => {
             <ValidatorArea rules="passes_not">
                 {({ errors }) => (
                     <>
-                        <input name="test" />
+                        <input name="test" value="test" />
                         {errors.length && <div>{errors[0]}</div>}
                     </>
                 )}
@@ -123,7 +125,7 @@ describe('test ValidatorProvider', () => {
 
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not">
-                <input name="test" onBlur={mockFn} />
+                <input name="test" onBlur={mockFn} value="test" />
             </ValidatorArea>
         );
 
@@ -137,7 +139,7 @@ describe('test ValidatorProvider', () => {
                 return validator.refs().length === 2;
             },
             message(): string {
-                return 'test';
+                return '';
             }
         }))
         const mockFn = jest.fn();
@@ -147,10 +149,10 @@ describe('test ValidatorProvider', () => {
                 {({ validate }: ProviderScope) => (
                     <>
                         <ValidatorArea name="test1">
-                            <input value="" />
+                            <input value="test" />
                         </ValidatorArea>
                         <ValidatorArea>
-                            <input value="" name="test2" />
+                            <input value="test" name="test2" />
                         </ValidatorArea>
                         <button onClick={() => validate(mockFn)} />
                     </>
@@ -180,11 +182,11 @@ describe('test ValidatorProvider', () => {
                 {({ validate }: ProviderScope) => (
                     <>
                         <ValidatorArea name="test1">
-                            <input value="" />
-                            <input value="" />
+                            <input value="test" />
+                            <input value="test" />
                         </ValidatorArea>
                         <ValidatorArea>
-                            <input value="" name="test2" />
+                            <input value="test" name="test2" />
                         </ValidatorArea>
                         <button onClick={() => validate(mockFn)} />
                     </>
@@ -213,10 +215,10 @@ describe('test ValidatorProvider', () => {
                 {({ validate }: ProviderScope) => (
                     <>
                         <ValidatorArea name="test1">
-                            <input value="" />
+                            <input value="test" />
                         </ValidatorArea>
                         <ValidatorArea>
-                            <input value="" name="test2" />
+                            <input value="test" name="test2" />
                         </ValidatorArea>
                         <button onClick={() => validate(mockFn)} />
                     </>
@@ -243,7 +245,7 @@ describe('test ValidatorProvider', () => {
 
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="no_other_areas">
-                <input name="test" onBlur={mockFn} />
+                <input name="test" value="test" onBlur={mockFn} />
             </ValidatorArea>
         );
 
@@ -270,10 +272,10 @@ describe('test ValidatorProvider', () => {
                 {({ validate }: ProviderScope) => (
                     <>
                         <ValidatorArea name="test1">
-                            <textarea value="" />
+                            <textarea value="test" />
                         </ValidatorArea>
                         <ValidatorArea>
-                            <input value="" name="test2" />
+                            <input value="test" name="test2" />
                         </ValidatorArea>
                         <button onClick={() => validate(mockFn)} />
                     </>
@@ -298,7 +300,7 @@ describe('test ValidatorProvider', () => {
 
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea validationName="Foo" rules="passes_not">
-                <input name="test" />
+                <input name="test" value="test" />
             </ValidatorArea>
         );
 
