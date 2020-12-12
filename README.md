@@ -1,8 +1,8 @@
 ## Coderan: Validator
 The smart React element validator
 
-[![Build Status](https://travis-ci.org/machielsdev/validator.svg?branch=develop)](https://travis-ci.org/machielsdev/validator)
-[![codecov](https://codecov.io/gh/machielsdev/validator/branch/develop/graph/badge.svg?token=OX5CACK0K0)](undefined)
+[![example workflow name](https://github.com/coderan-io/validator/workflows/CI/badge.svg)](https://github.com/coderan-io/validator/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/coderan-io/validator/branch/develop/graph/badge.svg?token=OX5CACK0K0)](https://codecov.io/gh/coderan-io/validator)
 
 ### Introduction
 The goal of this package, is to simplify the struggle of validating elements in React, with a simple system which allows

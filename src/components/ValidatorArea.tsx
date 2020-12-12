@@ -86,25 +86,28 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                 const rules = Validator.mergeRules(propRules, contextRules);
                 const refs = ref ? [ref] : this.inputRefs;
 
-                const validator = new Validator(
+                const validator = (new Validator(
                     refs,
                     rules,
                     ref ? ref.getAttribute('name') : this.getName(),
                     validationName
-                );
-                validator.setArea(this);
+                )).setArea(this);
 
-                this.dirty = !validator.validate();
+                validator.validate().then((passed) => {
+                    this.dirty = !passed;
 
-                if (this.dirty) {
-                    this.setState({
-                        errors: validator.getErrors()
-                    }, () => {
-                        resolve(false);
-                    })
-                } else {
-                    resolve(true)
-                }
+                    if (!passed) {
+                        this.setState({
+                            errors: validator.getErrors()
+                        }, () => {
+                            resolve(false);
+                        })
+                    } else {
+                        resolve(true);
+                    }
+                }).catch((e): void => {
+                    console.error(e);
+                });
             });
         })
     }
