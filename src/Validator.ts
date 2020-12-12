@@ -105,12 +105,11 @@ export class Validator {
     /**
      * Validate the elements
      */
-    public validate(): boolean {
+    public async validate(): Promise<boolean> {
         this.errors = [];
 
         if (this.hasValidatableElements()) {
-            return !this.getRuleList()
-                .map((rule: string) => this.validateRule(rule))
+            return !(await Promise.all(this.getRuleList().map((rule: string) => this.validateRule(rule))))
                 .filter((passed: boolean) => !passed)
                 .length;
         }
@@ -128,7 +127,7 @@ export class Validator {
     /**
      * Validate a specific rule
      */
-    private validateRule(rule: string): boolean {
+    private async validateRule(rule: string): Promise<boolean> {
         const [ruleName, ruleArgs = ''] = rule.split(':');
 
         if (Validator.ruleExists(ruleName)) {
@@ -138,7 +137,9 @@ export class Validator {
 
             const ruleArgsArray = ruleArgs.split(',');
 
-            if(!ruleObj.passed(this.elements, ...ruleArgsArray)) {
+            const passed = await ruleObj.passed(this.elements, ...ruleArgsArray);
+
+            if(!passed) {
                 this.errors.push(this.localize(ruleObj.message(), ...ruleArgsArray));
                 return false;
             }

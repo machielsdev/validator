@@ -1,88 +1,85 @@
-import min from '@/rules/min';
-import { Validator } from '@/Validator';
-import { mount } from 'enzyme';
-import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
 import React from 'react';
+import { mount } from 'enzyme';
+import max from '@/rules/max';
+import { Validator } from '@/Validator';
+import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
+import tick from '../../common/tick';
 import { IncorrectArgumentTypeError } from '@/rules';
 
-describe('test min rule', () => {
+describe('test max rule', () => {
     beforeEach(() => {
-        Validator.extend('min', min);
+        Validator.extend('max', max);
     });
 
-    it('should always validate inputs and not validate non-inputs', () => {
+    it('should always validate inputs and not validate non-inputs', async () => {
         const input = document.createElement('input');
         const meter = document.createElement('meter');
         const output = document.createElement('output');
         const progress = document.createElement('progress');
         const canvas = document.createElement('canvas');
-        input.value = '4';
-        output.value = '4';
-        meter.value = 4;
+        input.value = '7';
+        output.value = '7';
+        meter.value = 6;
         meter.max = 10;
-        progress.value = 4;
+        progress.value = 6;
 
         const validator_input = new Validator([
             input
         ],
-        ['min:5'],
+        ['max:5'],
         '');
 
         const validator_meter = new Validator([
             meter
         ],
-        ['min:5'],
+        ['max:5'],
         '');
 
         const validator_output = new Validator([
             output
         ],
-        ['min:5'],
+        ['max:5'],
         '');
 
         const validator_progress = new Validator([
             progress
         ],
-        ['min:5'],
+        ['max:5'],
         '');
 
         const validator_canvas = new Validator([
             canvas
         ],
-        ['min:5'],
+        ['max:5'],
         '');
 
         const validator_wrong_arg = new Validator([
             input
         ],
-        ['min:foo'],
+        ['max:foo'],
         '');
 
-        validator_input.validate();
+        await validator_input.validate();
         expect(validator_input.getErrors().length).toBe(1);
 
-        validator_meter.validate();
+        await validator_meter.validate();
         expect(validator_meter.getErrors().length).toBe(1);
 
-        validator_output.validate();
+        await validator_output.validate();
         expect(validator_output.getErrors().length).toBe(1);
 
-        validator_progress.validate();
+        await validator_progress.validate();
         expect(validator_progress.getErrors().length).toBe(1);
 
-        validator_canvas.validate();
+        await validator_canvas.validate();
         expect(validator_canvas.getErrors().length).toBe(0);
 
-        const throwsInvalidArgument = () => {
-            validator_wrong_arg.validate();
-        }
-
-        expect(() => throwsInvalidArgument()).toThrowError(IncorrectArgumentTypeError);
+        await expect( validator_wrong_arg.validate()).rejects.toBeInstanceOf(IncorrectArgumentTypeError);
     });
 
-    it('should validate select', () => {
+    it('should validate select', async () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
-            <ValidatorArea rules="min:5">
+            <ValidatorArea rules="max:3">
                 <select name="test">
                     <option value="4" selected>Option</option>
                 </select>
@@ -90,6 +87,7 @@ describe('test min rule', () => {
         );
 
         area.find('select').simulate('blur');
+        await tick();
         expect(area.state().errors.length).toBe(1);
     });
 });

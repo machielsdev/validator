@@ -3,13 +3,14 @@ import { mount } from 'enzyme';
 import required from '@/rules/required';
 import { ValidatorAreaProps, ValidatorArea } from '@/components/ValidatorArea';
 import { Validator } from '@/Validator';
+import tick from '../../common/tick';
 
 describe('test required rule', () => {
     beforeEach(() => {
         Validator.extend('required', required);
     });
 
-    it('should falsely validate select with options', () => {
+    it('should falsely validate select with options', async () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="required">
                 <select name="test">
@@ -19,11 +20,12 @@ describe('test required rule', () => {
         );
 
         area.find('select').simulate('blur');
+        await tick();
         expect(area.state().errors.length).toBe(1);
         expect(area.state().errors[0]).toBe('Test is required');
     });
 
-    it('should always validate validatable and not validate non-validatable', () => {
+    it('should always validate validatable and not validate non-validatable', async () => {
         const input = document.createElement('input');
         const meter = document.createElement('meter');
         const output = document.createElement('output');
@@ -60,19 +62,19 @@ describe('test required rule', () => {
         ['required'],
         'validator_input');
 
-        validator_input.validate();
+        await validator_input.validate();
         expect(validator_input.getErrors().length).toBe(1);
 
-        validator_meter.validate();
+        await validator_meter.validate();
         expect(validator_meter.getErrors().length).toBe(1);
 
-        validator_output.validate();
+        await validator_output.validate();
         expect(validator_output.getErrors().length).toBe(1);
 
-        validator_progress.validate();
+        await validator_progress.validate();
         expect(validator_progress.getErrors().length).toBe(1);
 
-        validator_div.validate();
+        await validator_div.validate();
         expect(validator_div.getErrors().length).toBe(0);
     });
 });
