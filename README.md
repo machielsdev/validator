@@ -1,7 +1,7 @@
 ## Coderan: Validator
 The smart React element validator
 
-[![Build Status](https://travis-ci.org/coderan-io/validator.svg?branch=develop)](https://travis-ci.org/coderan-io/validator)
+[![example workflow name](https://github.com/coderan-io/validator/workflows/CI/badge.svg)](https://github.com/coderan-io/validator/actions?query=workflow%3ACI)
 [![codecov](https://codecov.io/gh/coderan-io/validator/branch/develop/graph/badge.svg?token=OX5CACK0K0)](https://codecov.io/gh/coderan-io/validator)
 
 ### Introduction
