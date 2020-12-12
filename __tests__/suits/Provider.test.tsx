@@ -3,13 +3,7 @@ import { mount } from 'enzyme';
 import { Validator } from '@/Validator';
 import ValidatorProvider, { ValidatorProviderProps } from '@/components/ValidatorProvider';
 import { ValidatorArea } from '@/components/ValidatorArea';
-
-
-const tick = () => {
-    return new Promise(resolve => {
-        setTimeout(resolve, 0);
-    })
-}
+import tick from '../common/tick';
 
 describe('test ValidatorProvider', () => {
     beforeEach(() => {

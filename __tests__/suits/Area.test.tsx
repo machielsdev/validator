@@ -5,12 +5,7 @@ import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
 import ValidatorProvider, { ValidatorProviderProps } from '@/components/ValidatorProvider';
 import { ProviderScope } from '@/ProviderScope';
 import required from '@/rules/required';
-
-const tick = () => {
-    return new Promise(resolve => {
-        setTimeout(resolve, 0);
-    })
-}
+import tick from '../common/tick';
 
 describe('test ValidatorProvider', () => {
     beforeEach(() => {
@@ -82,7 +77,7 @@ describe('test ValidatorProvider', () => {
         expect(area.instance().getInputRefs().length).toBe(4);
     });
 
-    it('should apply rules on blur', () => {
+    it('should apply rules on blur', async () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not">
                 <input name="test" value="test" />
@@ -90,6 +85,7 @@ describe('test ValidatorProvider', () => {
         );
 
         area.find('input').at(0).simulate('blur');
+        await tick();
         expect(area.state().errors[0]).toBe('Not passed');
     });
 
@@ -107,16 +103,20 @@ describe('test ValidatorProvider', () => {
     it('should render error when area dirty', async () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not">
-                {({ errors }) => (
-                    <>
-                        <input name="test" value="test" />
-                        {errors.length && <div>{errors[0]}</div>}
-                    </>
-                )}
+                {({ errors }) => {
+                    return (
+                        <>
+                            <input name="test" value="test" />
+                            {!!errors.length && <div>{errors[0]}</div>}
+                        </>
+                    );
+                }}
             </ValidatorArea>
         );
 
         area.find('input').simulate('blur');
+        await tick();
+        area.update();
         expect(area.find('div').text()).toBe('Not passed');
     })
 
@@ -288,7 +288,7 @@ describe('test ValidatorProvider', () => {
         expect(mockFn).toHaveBeenCalled();
     });
 
-    it('should use validation name when provided', () => {
+    it('should use validation name when provided', async () => {
         Validator.extend('passes_not', {
             passed(): boolean {
                 return false;
@@ -305,6 +305,20 @@ describe('test ValidatorProvider', () => {
         );
 
         area.find('input').at(0).simulate('blur');
+        await tick();
         expect(area.state().errors[0]).toBe('Foo not passed');
     });
+
+    it('should log error when error occured', async () => {
+        const logFn = jest.spyOn(console, 'error');
+        const area = mount(
+            <ValidatorArea rules="min:foo">
+                <input name="test" value="test" />
+            </ValidatorArea>
+        );
+
+        area.find('input').at(0).simulate('blur');
+        await tick();
+        expect(logFn).toHaveBeenCalled();
+    })
 })

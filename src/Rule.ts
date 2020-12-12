@@ -12,7 +12,7 @@ export type RuleObject = {
     /**
      * Returns whether the rule passed with the given element(s)
      */
-    passed(elements: HTMLElement[], ...args: string[]): boolean | Promise<void>;
+    passed(elements: HTMLElement[], ...args: string[]): boolean | Promise<boolean>;
     /**
      * Message shown when the rule doesn't pass
      */

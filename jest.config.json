@@ -1,5 +1,5 @@
 {
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$",
+    "testRegex": "(/__tests__/suits/|(\\.|/)(test|spec))\\.[jt]sx?$",
     "setupFilesAfterEnv": ["./setupTests.ts"],
     "moduleNameMapper": {
         "@/(.*)": "<rootDir>/src/$1"

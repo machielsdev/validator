@@ -111,7 +111,7 @@ export class Validator {
         if (this.hasValidatableElements()) {
             return !(await Promise.all(this.getRuleList().map((rule: string) => this.validateRule(rule))))
                 .filter((passed: boolean) => !passed)
-                .length
+                .length;
         }
 
         return true;
@@ -137,7 +137,9 @@ export class Validator {
 
             const ruleArgsArray = ruleArgs.split(',');
 
-            if(!ruleObj.passed(this.elements, ...ruleArgsArray)) {
+            const passed = await ruleObj.passed(this.elements, ...ruleArgsArray);
+
+            if(!passed) {
                 this.errors.push(this.localize(ruleObj.message(), ...ruleArgsArray));
                 return false;
             }

@@ -1,4 +1,4 @@
-import { Rule } from '../src/Rule';
+import { Rule } from '@/Rule';
 import { Validator } from '@/Validator';
 
 describe('test validator', () => {
@@ -46,7 +46,7 @@ describe('test validator', () => {
         expect(Validator.ruleExists('testRule')).toBeTruthy();
     });
 
-    it('should validate rules as string', () => {
+    it('should validate rules as string', async () => {
         const input = document.createElement<'input'>('input');
         input.value = 'test';
 
@@ -58,11 +58,11 @@ describe('test validator', () => {
             'test'
         );
 
-        validator.validate();
+        await validator.validate();
         expect(validator.getErrors().length).toBe(2);
     });
 
-    it('should validate rules as array', () => {
+    it('should validate rules as array', async (): Promise<void> => {
         const input = document.createElement<'input'>('input');
         input.value = 'test';
         const validator = new Validator(
@@ -73,11 +73,11 @@ describe('test validator', () => {
             'test'
         );
 
-        validator.validate();
+        await validator.validate();
         expect(validator.getErrors().length).toBe(2);
     });
 
-    it('should validate with parameters', () => {
+    it('should validate with parameters', async (): Promise<void> => {
         const input = document.createElement<'input'>('input');
         input.value = 'test';
 
@@ -89,25 +89,22 @@ describe('test validator', () => {
             'test'
         );
 
-        validator.validate();
+        await validator.validate();
         expect(validator.getErrors()[0]).toBe('Rule params not passed: 1, 2, 3, 4');
     });
 
-    it('throws an exception when rule is not found', () => {
+    it('throws an exception when rule is not found', async (): Promise<void> => {
         const input = document.createElement<'input'>('input');
         input.value = 'test';
-        const throws = () => {
-            const validator = new Validator(
-                [
-                    input
-                ],
-                ['not_existing_rule'],
-                'test'
-            );
-            validator.validate();
-        }
+        const validator = new Validator(
+            [
+                input
+            ],
+            ['not_existing_rule'],
+            'test'
+        );
 
-        expect(() => throws()).toThrowError('Validation rule not_existing_rule not found.');
+        await expect(validator.validate()).rejects.toThrowError('Validation rule not_existing_rule not found.');
     });
 
     it('should merge rules', () => {
@@ -130,7 +127,7 @@ describe('test validator', () => {
         expect(() => throws()).toThrowError('Areas are only available when validating React components.')
     });
 
-    it('should be able to check if the value is required', () => {
+    it('should be able to check if the value is required', async () => {
         const input = document.createElement<'input'>('input');
         input.value = 'test';
         Validator.extend('check_if_required', (validator: Validator) => ({
@@ -150,12 +147,8 @@ describe('test validator', () => {
             'test'
         );
 
-        validator.validate();
+        await validator.validate();
 
         expect(validator.getErrors()[0]).toBe('Value is false negative required');
-    })
-
-    it('should return empty array when no refs provided', () => {
-
     })
 });
