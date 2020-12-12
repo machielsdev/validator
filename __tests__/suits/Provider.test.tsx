@@ -3,13 +3,7 @@ import { mount } from 'enzyme';
 import { Validator } from '@/Validator';
 import ValidatorProvider, { ValidatorProviderProps } from '@/components/ValidatorProvider';
 import { ValidatorArea } from '@/components/ValidatorArea';
-
-
-const tick = () => {
-    return new Promise(resolve => {
-        setTimeout(resolve, 0);
-    })
-}
+import tick from '../common/tick';
 
 describe('test ValidatorProvider', () => {
     beforeEach(() => {
@@ -90,10 +84,10 @@ describe('test ValidatorProvider', () => {
                 {({ validate }) => (
                     <>
                         <ValidatorArea rules="passes_not" name="test1">
-                            <input value="" />
+                            <input value="test" />
                         </ValidatorArea>
                         <ValidatorArea rules="passes_not" name="test2">
-                            <input value="" />
+                            <input value="test" />
                         </ValidatorArea>
                         <button onClick={() => validate(mockFn)} />
                     </>

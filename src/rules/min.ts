@@ -1,5 +1,12 @@
-import { getValue, isInputElement, isSelectElement } from '@/utils/dom';
-import { isNumeric } from '@/utils/utils';
+import {
+    getValue,
+    isInputElement,
+    isMeterElement,
+    isOutputElement,
+    isProgressElement,
+    isSelectElement
+} from '@/common/dom';
+import { isNumeric } from '@/common/utils';
 import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
 
 export default {
@@ -9,18 +16,18 @@ export default {
         }
 
         return elements.every((element: HTMLElement) => {
-            if (isInputElement(element) || isSelectElement(element)) {
+            if (
+                isInputElement(element)
+                || isSelectElement(element)
+                || isProgressElement(element)
+                || isMeterElement(element)
+                || isOutputElement(element)
+            ) {
                 const value = getValue(element);
 
-                if (Array.isArray(value)) {
-                    return value.every((val: string) => {
-                        return isNumeric(val) && parseFloat(val) >= parseFloat(min);
-                    });
-                } else {
-                    return value
-                        && isNumeric(value)
-                        && parseFloat(value) >= parseFloat(min);
-                }
+                return value.every((val: string) => {
+                    return isNumeric(val) && parseFloat(val) >= parseFloat(min);
+                });
             }
 
             return true;
@@ -29,4 +36,4 @@ export default {
     message(): string {
         return `{name} should be at least {0}`
     }
-}
+};

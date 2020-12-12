@@ -9,6 +9,7 @@ export interface ValidatorAreaProps {
     rules?: RuleOptions;
     name?: string;
     children: React.ReactNode | ((scope: AreaScope) => React.ReactNode);
+    validationName?: string;
 }
 
 export interface ValidatorAreaPropsWithDefault extends ValidatorAreaProps {
@@ -77,29 +78,36 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
             this.setState(() => ({
                 errors: []
             }), () => {
-                const { rules: propRules } = this.props as ValidatorAreaPropsWithDefault;
+                const {
+                    rules: propRules,
+                    validationName
+                } = this.props as ValidatorAreaPropsWithDefault;
                 const { rules: contextRules } = this.context;
                 const rules = Validator.mergeRules(propRules, contextRules);
                 const refs = ref ? [ref] : this.inputRefs;
 
-                const validator = new Validator(
+                const validator = (new Validator(
                     refs,
                     rules,
-                    ref ? ref.getAttribute('name') : this.getName()
-                );
-                validator.setArea(this);
+                    ref ? ref.getAttribute('name') : this.getName(),
+                    validationName
+                )).setArea(this);
 
-                this.dirty = !validator.validate();
+                validator.validate().then((passed) => {
+                    this.dirty = !passed;
 
-                if (this.dirty) {
-                    this.setState({
-                        errors: validator.getErrors()
-                    }, () => {
-                        resolve(false);
-                    })
-                } else {
-                    resolve(true)
-                }
+                    if (!passed) {
+                        this.setState({
+                            errors: validator.getErrors()
+                        }, () => {
+                            resolve(false);
+                        })
+                    } else {
+                        resolve(true);
+                    }
+                }).catch((e): void => {
+                    console.error(e);
+                });
             });
         })
     }

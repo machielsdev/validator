@@ -1,6 +1,9 @@
 ## Coderan: Validator
 The smart React element validator
 
+[![Build Status](https://travis-ci.org/coderan-io/validator.svg?branch=develop)](https://travis-ci.org/coderan-io/validator)
+[![codecov](https://codecov.io/gh/coderan-io/validator/branch/develop/graph/badge.svg?token=OX5CACK0K0)](https://codecov.io/gh/coderan-io/validator)
+
 ### Introduction
 The goal of this package, is to simplify the struggle of validating elements in React, with a simple system which allows
 users to add their own rules.  
@@ -169,5 +172,20 @@ declare type RuleObject = {
 
 export type Rule = RuleObject | RuleFunction;
 ```
+
+Perhaps you would like to use a different name for the message than the `name`-attribute. That's perfectly fine! 
+```tsx
+import { ValidatorArea } from '@coderan/validator';
+
+<ValidatorArea rules="required" validationName="Surname">
+    {({ errors }) => (
+        <>
+            <input name="username" />
+            { errors.length && <span>{errors[0]}</span> }
+        </>
+    )}
+</ValidatorArea>
+```
+and when no value is present in the input, a message like "Surname is required" will appear. 
 
 ### Happy Coding!
