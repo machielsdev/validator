@@ -1,4 +1,4 @@
-import { isInputElement, getValue, isSelectElement } from '@/utils/dom';
+import { isInputElement, isSelectElement, getValue } from '@/common/dom';
 
 
 export default {
@@ -7,21 +7,15 @@ export default {
             const matchesRegex = (value: string) => new RegExp(pattern).test(value);
 
             if (isInputElement(element) || isSelectElement(element)) {
-                const value = getValue(element);
+                const values = getValue(element).filter(Boolean);
 
-                if (Array.isArray(value)) {
-                    return value.every((val: string) => {
-                        return matchesRegex(val);
-                    });
-                } else {
-                    return matchesRegex(value);
-                }
+                return values.every((value) => matchesRegex(value));
             }
 
             return true;
         })
     },
     message(): string {
-        return `{name} should be at least {0}`
+        return '{name} heeft een ongeldig formaat';
     }
 }

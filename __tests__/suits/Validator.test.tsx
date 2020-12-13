@@ -109,7 +109,7 @@ describe('test validator', () => {
 
     it('should merge rules', () => {
         const rules = Validator.mergeRules(['rule_one', 'rule_two'], 'rule_tree|rule_four', ['rule_five|rule_six']);
-        expect(rules.length).toBe(6);
+        expect(rules.length).toBe(5);
     });
 
     it('should throw an error when trying to get area when not in area', () => {

@@ -125,22 +125,34 @@ export class Validator {
     }
 
     /**
+     * Get the rule name and the parameters as tuple
+     */
+    private static getRuleNameAndParameters(rule: string): [string, string[]] {
+        const [name, ...splittedParameters] = rule.split(':');
+        const parameters = splittedParameters.join(':');
+
+        if (['regex'].indexOf(name) !== -1) {
+            return [name, [parameters]];
+        }
+
+        return [name, parameters.split(',')];
+    }
+
+    /**
      * Validate a specific rule
      */
     private async validateRule(rule: string): Promise<boolean> {
-        const [ruleName, ruleArgs = ''] = rule.split(':');
+        const [ruleName, ruleParameters] = Validator.getRuleNameAndParameters(rule);
 
         if (Validator.ruleExists(ruleName)) {
             const ruleObj: RuleObject = Validator.isRuleFunction(ruleName)
                 ? (Validator.rules[ruleName] as RuleFunction)(this)
                 : Validator.rules[ruleName] as RuleObject;
 
-            const ruleArgsArray = ruleArgs.split(',');
-
-            const passed = await ruleObj.passed(this.elements, ...ruleArgsArray);
+            const passed = await ruleObj.passed(this.elements, ...ruleParameters);
 
             if(!passed) {
-                this.errors.push(this.localize(ruleObj.message(), ...ruleArgsArray));
+                this.errors.push(this.localize(ruleObj.message(), ...ruleParameters));
                 return false;
             }
 
@@ -215,12 +227,12 @@ export class Validator {
      * Merges rules from different sources into one array
      */
     public static mergeRules(...rules: RuleOptions[]): string[] {
-        const mergedRules: string[] = [];
+        let mergedRules: string[] = [];
         rules.forEach((rule: string | string[]) => {
             if (typeof rule === 'string') {
                 rule.split('|').forEach((subRule) => mergedRules.push(subRule));
             } else if (Array.isArray(rule) && rule.length) {
-                Validator.mergeRules(...rule).forEach((subRule) => mergedRules.push(subRule));
+                mergedRules = [...mergedRules, ...rule];
             }
         });
 
