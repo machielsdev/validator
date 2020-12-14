@@ -1,8 +1,15 @@
 /**
  * Returns whether element is an input element
  */
-const isInputElement = (element: HTMLElement): element is HTMLInputElement|HTMLTextAreaElement => {
+const isInputElement = (element: HTMLElement): element is HTMLInputElement => {
     return element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement;
+}
+
+/**
+ * Indicates whether element is a radio element
+ */
+const isRadioElement = (element: HTMLElement): element is HTMLInputElement => {
+    return isInputElement(element) && element.type === 'radio';
 }
 
 /**
@@ -77,6 +84,7 @@ const getValue = (element: HTMLElement): string[] => {
 
 export {
     isInputElement,
+    isRadioElement,
     isSelectElement,
     isCanvasElement,
     isMeterElement,
