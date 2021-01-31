@@ -13,6 +13,13 @@ const isRadioElement = (element: HTMLElement): element is HTMLInputElement => {
 }
 
 /**
+ * Indicates whether element is a checkbox element
+ */
+const isCheckboxElement = (element: HTMLElement): element is HTMLInputElement => {
+    return isInputElement(element) && element.type === 'checkbox';
+}
+
+/**
  * Returns whether element is an canvas element
  */
 const isCanvasElement = (element: HTMLElement): element is HTMLCanvasElement => {
@@ -82,6 +89,16 @@ const getValue = (element: HTMLElement): string[] => {
     return [];
 }
 
+const nodeListToArray = <T extends Node>(nodeList: NodeListOf<T>): T[] => {
+    const array: T[] = [];
+
+    nodeList.forEach((node: T) => {
+        array.push(node);
+    })
+
+    return array;
+}
+
 export {
     isInputElement,
     isRadioElement,
@@ -90,6 +107,8 @@ export {
     isMeterElement,
     isOutputElement,
     isProgressElement,
+    isCheckboxElement,
     htmlCollectionToArray,
     getValue,
+    nodeListToArray
 };
