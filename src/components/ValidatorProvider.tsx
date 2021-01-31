@@ -12,13 +12,15 @@ export interface ValidatorProviderProps {
 
 interface ValidatorProviderState {
     areas: Record<string, ValidatorArea>;
-    errors: Messages
+    errors: Messages;
+    dirty: boolean;
 }
 
 export class ValidatorProvider extends React.Component<ValidatorProviderProps, ValidatorProviderState> {
     public readonly state: ValidatorProviderState = {
         areas: {},
-        errors: {}
+        errors: {},
+        dirty: false
     }
 
     /**
@@ -45,13 +47,21 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
     private async validate(onValidated?: () => void): Promise<void> {
         const { areas } = this.state;
 
-        const dirtyAreas = (await Promise.all(Object.values(areas)
-            .map((area) => area.validate())
-        )).filter((clean) => !clean);
+        this.setState({
+            dirty: false
+        }, async (): Promise<void> => {
+            const dirtyAreas = (await Promise.all(Object.values(areas)
+                .map((area) => area.validate())
+            )).filter((clean: boolean) => !clean);
 
-        if (!dirtyAreas.length && onValidated) {
-            onValidated();
-        }
+            if (!dirtyAreas.length && onValidated) {
+                onValidated();
+            } else {
+                this.setState({
+                    dirty: true
+                })
+            }
+        });
     }
 
     /**
@@ -59,7 +69,8 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
      */
     private getScopedProperties(): ProviderScope {
         return {
-            validate: (onValidated?: () => void): Promise<void> => this.validate(onValidated)
+            validate: (onValidated?: () => void): Promise<void> => this.validate(onValidated),
+            dirty: this.state.dirty
         };
     }
 

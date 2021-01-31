@@ -202,7 +202,8 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
         const { errors } = this.state;
 
         return {
-            errors
+            errors,
+            dirty: this.dirty
         };
     }
 

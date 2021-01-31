@@ -320,5 +320,23 @@ describe('test ValidatorProvider', () => {
         area.find('input').at(0).simulate('blur');
         await tick();
         expect(logFn).toHaveBeenCalled();
+    });
+
+    it('should indicate whether the area is dirty', async () => {
+        const area = mount(
+            <ValidatorArea rules="required">
+                {({ dirty }) => (
+                    <>
+                        <input name="test" value="" />
+                        <div>{dirty ? 'yes' : 'no'}</div>
+                    </>
+                )}
+            </ValidatorArea>
+        );
+
+        area.find('input').at(0).simulate('blur');
+        await tick();
+        expect(area.find('div').text()).toBe('yes');
+
     })
 })
