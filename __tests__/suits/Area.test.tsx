@@ -19,20 +19,19 @@ describe('test ValidatorProvider', () => {
         });
         Validator.extend('required', required);
 
-        jest.useFakeTimers();
+        Validator.extend('long_wait', {
+            async passed(): Promise<boolean> {
+                return new Promise((resolve: (value: boolean) => void): void => {
+                    setTimeout(() => {
+                        resolve(true);
+                    }, 100);
+                })
+            },
+            message(): string {
+                return 'test';
+            }
+        });
     });
-    Validator.extend('long_wait', {
-        async passed(): Promise<boolean> {
-            return new Promise((resolve: (value: boolean) => void): void => {
-                setTimeout(() => {
-                    resolve(true);
-                }, 100);
-            })
-        },
-        message(): string {
-            return 'test';
-        }
-    })
 
     afterEach(() => {
         jest.useRealTimers();
@@ -358,6 +357,8 @@ describe('test ValidatorProvider', () => {
     });
 
     it('should indicate pending while validation is ongoing', async () => {
+        jest.useFakeTimers();
+
         const area = mount(
             <ValidatorArea rules="long_wait">
                 {({pending}) => (
@@ -370,11 +371,10 @@ describe('test ValidatorProvider', () => {
         );
 
         area.find('input').at(0).simulate('blur');
-        await tick()
-        jest.advanceTimersByTime(20);
-        await Promise.resolve();
+        jest.advanceTimersByTime(90);
         expect(area.find('div').text()).toBe('yes');
-        jest.advanceTimersByTime(80);
+        await Promise.resolve();
+        jest.advanceTimersByTime(10);
         await Promise.resolve();
         expect(area.find('div').text()).toBe('no');
     });
