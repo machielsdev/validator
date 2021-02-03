@@ -6,7 +6,7 @@ export interface AreaScope {
     /**
      * Flag indicating the area is dirty
      */
-    dirty: boolean;
+    valid: boolean;
     /**
      * Flag indicating the area has a pending validation
      */

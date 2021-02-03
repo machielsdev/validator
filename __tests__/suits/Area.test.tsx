@@ -339,13 +339,13 @@ describe('test ValidatorProvider', () => {
         expect(logFn).toHaveBeenCalled();
     });
 
-    it('should indicate whether the area is dirty', async () => {
+    it('should indicate whether the area is valid', async () => {
         const area = mount(
             <ValidatorArea rules="required">
-                {({dirty}) => (
+                {({valid}) => (
                     <>
                         <input name="test" value=""/>
-                        <div>{dirty ? 'yes' : 'no'}</div>
+                        <div>{valid ? 'yes' : 'no'}</div>
                     </>
                 )}
             </ValidatorArea>

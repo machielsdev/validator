@@ -4,7 +4,7 @@ export interface ProviderScope {
      */
     validate: (onValidated?: () => void) => Promise<void>;
     /**
-     * Flag indicating one or more areas are dirty
+     * Flag indicating one or more areas is invalid
      */
-    dirty: boolean;
+    valid: boolean;
 }

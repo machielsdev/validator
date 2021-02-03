@@ -13,14 +13,14 @@ export interface ValidatorProviderProps {
 interface ValidatorProviderState {
     areas: Record<string, ValidatorArea>;
     errors: Messages;
-    dirty: boolean;
+    valid: boolean;
 }
 
 export class ValidatorProvider extends React.Component<ValidatorProviderProps, ValidatorProviderState> {
     public readonly state: ValidatorProviderState = {
         areas: {},
         errors: {},
-        dirty: false
+        valid: false
     }
 
     /**
@@ -48,17 +48,17 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
         const { areas } = this.state;
 
         this.setState({
-            dirty: false
+            valid: false
         }, async (): Promise<void> => {
-            const dirtyAreas = (await Promise.all(Object.values(areas)
+            const invalidAreas = (await Promise.all(Object.values(areas)
                 .map((area) => area.validate())
-            )).filter((clean: boolean) => !clean);
+            )).filter((valid: boolean) => !valid);
 
-            if (!dirtyAreas.length && onValidated) {
+            if (!invalidAreas.length && onValidated) {
                 onValidated();
             } else {
                 this.setState({
-                    dirty: true
+                    valid: true
                 })
             }
         });
@@ -70,7 +70,7 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
     private getScopedProperties(): ProviderScope {
         return {
             validate: (onValidated?: () => void): Promise<void> => this.validate(onValidated),
-            dirty: this.state.dirty
+            valid: this.state.valid
         };
     }
 
