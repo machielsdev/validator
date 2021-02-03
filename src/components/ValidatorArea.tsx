@@ -18,6 +18,7 @@ export interface ValidatorAreaPropsWithDefault extends ValidatorAreaProps {
 
 interface ValidatorAreaState {
     errors: string[];
+    dirty: boolean;
 }
 
 interface ValidatorAreaComponentsProps {
@@ -42,15 +43,11 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
     private inputRefs: HTMLElement[] = [];
 
     /**
-     * Indicates whether the area is dirty
-     */
-    private dirty = false;
-
-    /**
      * @inheritDoc
      */
     public readonly state: ValidatorAreaState = {
-        errors: []
+        errors: [],
+        dirty: false
     }
 
     /**
@@ -74,8 +71,8 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
      */
     public validate(ref?: HTMLElement): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            this.dirty = false;
             this.setState(() => ({
+                dirty: false,
                 errors: []
             }), () => {
                 const {
@@ -94,11 +91,10 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                 )).setArea(this);
 
                 validator.validate().then((passed) => {
-                    this.dirty = !passed;
-
                     if (!passed) {
                         this.setState({
-                            errors: validator.getErrors()
+                            errors: validator.getErrors(),
+                            dirty: true
                         }, () => {
                             resolve(false);
                         })
@@ -199,11 +195,11 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
      * Returns the properties accessible in the area component scope
      */
     private getScopedProperties(): AreaScope {
-        const { errors } = this.state;
+        const { errors, dirty } = this.state;
 
         return {
             errors,
-            dirty: this.dirty
+            dirty
         };
     }
 
