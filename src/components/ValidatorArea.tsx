@@ -19,6 +19,7 @@ export interface ValidatorAreaPropsWithDefault extends ValidatorAreaProps {
 interface ValidatorAreaState {
     errors: string[];
     dirty: boolean;
+    pending: boolean;
 }
 
 interface ValidatorAreaComponentsProps {
@@ -47,7 +48,8 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
      */
     public readonly state: ValidatorAreaState = {
         errors: [],
-        dirty: false
+        dirty: false,
+        pending: false
     }
 
     /**
@@ -73,7 +75,8 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
         return new Promise<boolean>((resolve) => {
             this.setState(() => ({
                 dirty: false,
-                errors: []
+                errors: [],
+                pending: true
             }), () => {
                 const {
                     rules: propRules,
@@ -90,19 +93,28 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                     validationName
                 )).setArea(this);
 
-                validator.validate().then((passed) => {
+                validator.validate().then((passed: boolean): void => {
                     if (!passed) {
                         this.setState({
                             errors: validator.getErrors(),
-                            dirty: true
-                        }, () => {
+                            dirty: true,
+                            pending: false
+                        }, (): void => {
                             resolve(false);
                         })
                     } else {
-                        resolve(true);
+                        this.setState({
+                            pending: false
+                        }, () => {
+                            resolve(true);
+                        })
                     }
                 }).catch((e): void => {
-                    console.error(e);
+                    this.setState({
+                        pending: false
+                    }, () => {
+                        console.error(e);
+                    })
                 });
             });
         })
@@ -195,11 +207,12 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
      * Returns the properties accessible in the area component scope
      */
     private getScopedProperties(): AreaScope {
-        const { errors, dirty } = this.state;
+        const { errors, dirty, pending } = this.state;
 
         return {
             errors,
-            dirty
+            dirty,
+            pending
         };
     }
 

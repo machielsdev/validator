@@ -17,13 +17,31 @@ describe('test ValidatorProvider', () => {
                 return 'not passed';
             }
         });
-        Validator.extend('required', required)
+        Validator.extend('required', required);
+
+        jest.useFakeTimers();
+    });
+    Validator.extend('long_wait', {
+        async passed(): Promise<boolean> {
+            return new Promise((resolve: (value: boolean) => void): void => {
+                setTimeout(() => {
+                    resolve(true);
+                }, 100);
+            })
+        },
+        message(): string {
+            return 'test';
+        }
+    })
+
+    afterEach(() => {
+        jest.useRealTimers();
     });
 
     it('should render input', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea>
-                <input name="test" />
+                <input name="test"/>
             </ValidatorArea>
         );
 
@@ -34,7 +52,7 @@ describe('test ValidatorProvider', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea>
                 {() => (
-                    <input name="test" />
+                    <input name="test"/>
                 )}
             </ValidatorArea>
         );
@@ -65,8 +83,8 @@ describe('test ValidatorProvider', () => {
                     <>
                         <><input/></>
                         <div>
-                            <input />
-                            <input />
+                            <input/>
+                            <input/>
                             <><input/></>
                         </div>
                     </>
@@ -80,7 +98,7 @@ describe('test ValidatorProvider', () => {
     it('should apply rules on blur', async () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not">
-                <input name="test" value="test" />
+                <input name="test" value="test"/>
             </ValidatorArea>
         );
 
@@ -92,7 +110,7 @@ describe('test ValidatorProvider', () => {
     it('should not apply rules on blur when non-blurrable element', () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not" name="test">
-                <canvas />
+                <canvas/>
             </ValidatorArea>
         );
 
@@ -103,10 +121,10 @@ describe('test ValidatorProvider', () => {
     it('should render error when area dirty', async () => {
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not">
-                {({ errors }) => {
+                {({errors}) => {
                     return (
                         <>
-                            <input name="test" value="test" />
+                            <input name="test" value="test"/>
                             {!!errors.length && <div>{errors[0]}</div>}
                         </>
                     );
@@ -125,7 +143,7 @@ describe('test ValidatorProvider', () => {
 
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="passes_not">
-                <input name="test" onBlur={mockFn} value="test" />
+                <input name="test" onBlur={mockFn} value="test"/>
             </ValidatorArea>
         );
 
@@ -146,15 +164,15 @@ describe('test ValidatorProvider', () => {
 
         const provider = mount<ValidatorProvider, ValidatorProviderProps>(
             <ValidatorProvider rules="test_all">
-                {({ validate }: ProviderScope) => (
+                {({validate}: ProviderScope) => (
                     <>
                         <ValidatorArea name="test1">
-                            <input value="test" />
+                            <input value="test"/>
                         </ValidatorArea>
                         <ValidatorArea>
-                            <input value="test" name="test2" />
+                            <input value="test" name="test2"/>
                         </ValidatorArea>
-                        <button onClick={() => validate(mockFn)} />
+                        <button onClick={() => validate(mockFn)}/>
                     </>
                 )}
             </ValidatorProvider>
@@ -169,7 +187,7 @@ describe('test ValidatorProvider', () => {
         Validator.extend('test_specific', (validator: Validator) => ({
             passed(): boolean {
                 return validator.refs('test1').length === 2
-                && validator.refs('test2').length === 1;
+                    && validator.refs('test2').length === 1;
             },
             message(): string {
                 return 'test';
@@ -179,16 +197,16 @@ describe('test ValidatorProvider', () => {
 
         const provider = mount<ValidatorProvider, ValidatorProviderProps>(
             <ValidatorProvider rules="test_specific">
-                {({ validate }: ProviderScope) => (
+                {({validate}: ProviderScope) => (
                     <>
                         <ValidatorArea name="test1">
-                            <input value="test" />
-                            <input value="test" />
+                            <input value="test"/>
+                            <input value="test"/>
                         </ValidatorArea>
                         <ValidatorArea>
-                            <input value="test" name="test2" />
+                            <input value="test" name="test2"/>
                         </ValidatorArea>
-                        <button onClick={() => validate(mockFn)} />
+                        <button onClick={() => validate(mockFn)}/>
                     </>
                 )}
             </ValidatorProvider>
@@ -212,15 +230,15 @@ describe('test ValidatorProvider', () => {
 
         const provider = mount<ValidatorProvider, ValidatorProviderProps>(
             <ValidatorProvider rules="test_not_existing">
-                {({ validate }: ProviderScope) => (
+                {({validate}: ProviderScope) => (
                     <>
                         <ValidatorArea name="test1">
-                            <input value="test" />
+                            <input value="test"/>
                         </ValidatorArea>
                         <ValidatorArea>
-                            <input value="test" name="test2" />
+                            <input value="test" name="test2"/>
                         </ValidatorArea>
-                        <button onClick={() => validate(mockFn)} />
+                        <button onClick={() => validate(mockFn)}/>
                     </>
                 )}
             </ValidatorProvider>
@@ -245,7 +263,7 @@ describe('test ValidatorProvider', () => {
 
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea rules="no_other_areas">
-                <input name="test" value="test" onBlur={mockFn} />
+                <input name="test" value="test" onBlur={mockFn}/>
             </ValidatorArea>
         );
 
@@ -269,15 +287,15 @@ describe('test ValidatorProvider', () => {
 
         const provider = mount<ValidatorProvider, ValidatorProviderProps>(
             <ValidatorProvider rules="test_types">
-                {({ validate }: ProviderScope) => (
+                {({validate}: ProviderScope) => (
                     <>
                         <ValidatorArea name="test1">
-                            <textarea value="test" />
+                            <textarea value="test"/>
                         </ValidatorArea>
                         <ValidatorArea>
-                            <input value="test" name="test2" />
+                            <input value="test" name="test2"/>
                         </ValidatorArea>
-                        <button onClick={() => validate(mockFn)} />
+                        <button onClick={() => validate(mockFn)}/>
                     </>
                 )}
             </ValidatorProvider>
@@ -300,7 +318,7 @@ describe('test ValidatorProvider', () => {
 
         const area = mount<ValidatorArea, ValidatorAreaProps>(
             <ValidatorArea validationName="Foo" rules="passes_not">
-                <input name="test" value="test" />
+                <input name="test" value="test"/>
             </ValidatorArea>
         );
 
@@ -313,7 +331,7 @@ describe('test ValidatorProvider', () => {
         const logFn = jest.spyOn(console, 'error');
         const area = mount(
             <ValidatorArea rules="min:foo">
-                <input name="test" value="test" />
+                <input name="test" value="test"/>
             </ValidatorArea>
         );
 
@@ -325,9 +343,9 @@ describe('test ValidatorProvider', () => {
     it('should indicate whether the area is dirty', async () => {
         const area = mount(
             <ValidatorArea rules="required">
-                {({ dirty }) => (
+                {({dirty}) => (
                     <>
-                        <input name="test" value="" />
+                        <input name="test" value=""/>
                         <div>{dirty ? 'yes' : 'no'}</div>
                     </>
                 )}
@@ -337,6 +355,27 @@ describe('test ValidatorProvider', () => {
         area.find('input').at(0).simulate('blur');
         await tick();
         expect(area.find('div').text()).toBe('yes');
+    });
 
-    })
+    it('should indicate pending while validation is ongoing', async () => {
+        const area = mount(
+            <ValidatorArea rules="long_wait">
+                {({pending}) => (
+                    <>
+                        <input name="test" value=""/>
+                        <div>{pending ? 'yes' : 'no'}</div>
+                    </>
+                )}
+            </ValidatorArea>
+        );
+
+        area.find('input').at(0).simulate('blur');
+        await tick()
+        jest.advanceTimersByTime(20);
+        await Promise.resolve();
+        expect(area.find('div').text()).toBe('yes');
+        jest.advanceTimersByTime(80);
+        await Promise.resolve();
+        expect(area.find('div').text()).toBe('no');
+    });
 })
