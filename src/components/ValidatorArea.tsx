@@ -18,10 +18,14 @@ export interface ValidatorAreaPropsWithDefault extends ValidatorAreaProps {
 
 interface ValidatorAreaState {
     errors: string[];
+    valid: boolean;
+    pending: boolean;
+    dirty: boolean;
+    touched: boolean;
 }
 
 interface ValidatorAreaComponentsProps {
-    onBlur: () => void;
+    onBlur: (event: React.FocusEvent) => void;
     ref: React.RefObject<HTMLElement>;
 }
 
@@ -42,15 +46,14 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
     private inputRefs: HTMLElement[] = [];
 
     /**
-     * Indicates whether the area is dirty
-     */
-    private dirty = false;
-
-    /**
      * @inheritDoc
      */
     public readonly state: ValidatorAreaState = {
-        errors: []
+        errors: [],
+        valid: false,
+        pending: false,
+        dirty: false,
+        touched: false
     }
 
     /**
@@ -74,9 +77,10 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
      */
     public validate(ref?: HTMLElement): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            this.dirty = false;
             this.setState(() => ({
-                errors: []
+                valid: false,
+                errors: [],
+                pending: true
             }), () => {
                 const {
                     rules: propRules,
@@ -93,20 +97,29 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                     validationName
                 )).setArea(this);
 
-                validator.validate().then((passed) => {
-                    this.dirty = !passed;
-
+                validator.validate().then((passed: boolean): void => {
                     if (!passed) {
                         this.setState({
-                            errors: validator.getErrors()
-                        }, () => {
+                            errors: validator.getErrors(),
+                            valid: false,
+                            pending: false
+                        }, (): void => {
                             resolve(false);
                         })
                     } else {
-                        resolve(true);
+                        this.setState({
+                            pending: false,
+                            valid: true
+                        }, () => {
+                            resolve(true);
+                        })
                     }
                 }).catch((e): void => {
-                    console.error(e);
+                    this.setState({
+                        pending: false
+                    }, () => {
+                        console.error(e);
+                    })
                 });
             });
         })
@@ -156,14 +169,27 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
 
                         return React.cloneElement<ValidatorAreaComponentsProps>(child, {
                             ...child.props,
-                            onBlur: (): void => {
+                            onBlur: (event: React.FocusEvent): void => {
                                 if (child.props.onBlur) {
-                                    child.props.onBlur();
+                                    child.props.onBlur(event);
                                 }
 
-                                if (this.elementCanBlur(child)) {
-                                    this.validate(ref);
+                                this.setState({
+                                    touched: true
+                                }, () => {
+                                    if (this.elementCanBlur(child)) {
+                                        this.validate(ref);
+                                    }
+                                });
+                            },
+                            onChange: (event: React.ChangeEvent): void => {
+                                if (child.props.onChange) {
+                                    child.props.onChange(event);
                                 }
+
+                                this.setState({
+                                    dirty: true
+                                })
                             },
                             ref: (node: HTMLElement) => {
                                 if (node && !this.inputRefs.includes(node)) {
@@ -199,10 +225,20 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
      * Returns the properties accessible in the area component scope
      */
     private getScopedProperties(): AreaScope {
-        const { errors } = this.state;
+        const {
+            errors,
+            valid,
+            pending,
+            dirty,
+            touched
+        } = this.state;
 
         return {
-            errors
+            errors,
+            valid,
+            pending,
+            dirty,
+            touched
         };
     }
 
