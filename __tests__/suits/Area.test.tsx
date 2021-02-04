@@ -150,6 +150,19 @@ describe('test ValidatorProvider', () => {
         expect(mockFn).toBeCalled();
     });
 
+    it('should call element\'s provided onChange along validator onChange', () => {
+        const mockFn = jest.fn();
+
+        const area = mount<ValidatorArea, ValidatorAreaProps>(
+            <ValidatorArea rules="passes_not">
+                <input name="test" onChange={mockFn} value="test"/>
+            </ValidatorArea>
+        );
+
+        area.find('input').simulate('change');
+        expect(mockFn).toBeCalled();
+    });
+
     it('should get all input refs from the provider', async () => {
         Validator.extend('test_all', (validator: Validator) => ({
             passed(): boolean {
@@ -377,5 +390,23 @@ describe('test ValidatorProvider', () => {
         jest.advanceTimersByTime(10);
         await Promise.resolve();
         expect(area.find('div').text()).toBe('no');
+    });
+
+    it('should indicate dirty when input changed', async () => {
+        jest.useFakeTimers();
+
+        const area = mount(
+            <ValidatorArea rules="long_wait">
+                {({dirty}) => (
+                    <>
+                        <input name="test" value=""/>
+                        <div>{dirty ? 'yes' : 'no'}</div>
+                    </>
+                )}
+            </ValidatorArea>
+        );
+
+        area.find('input').at(0).simulate('change', { target: { value: 'a' } });
+        expect(area.find('div').text()).toBe('yes')
     });
 })
