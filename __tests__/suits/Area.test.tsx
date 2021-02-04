@@ -366,7 +366,7 @@ describe('test ValidatorProvider', () => {
 
         area.find('input').at(0).simulate('blur');
         await tick();
-        expect(area.find('div').text()).toBe('yes');
+        expect(area.find('div').text()).toBe('no');
     });
 
     it('should indicate pending while validation is ongoing', async () => {
