@@ -109,8 +109,6 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
                     } else {
                         this.setState({
                             pending: false,
-                            dirty: false,
-                            touched: false,
                             valid: true
                         }, () => {
                             resolve(true);
@@ -178,11 +176,11 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
 
                                 this.setState({
                                     touched: true
+                                }, () => {
+                                    if (this.elementCanBlur(child)) {
+                                        this.validate(ref);
+                                    }
                                 });
-
-                                if (this.elementCanBlur(child)) {
-                                    this.validate(ref);
-                                }
                             },
                             onChange: (event: React.ChangeEvent): void => {
                                 if (child.props.onChange) {
