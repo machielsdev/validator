@@ -422,6 +422,7 @@ describe('test ValidatorProvider', () => {
         );
 
         area.find('input').at(0).simulate('blur');
+        await tick();
         expect(area.find('div').text()).toBe('yes')
     });
 })
