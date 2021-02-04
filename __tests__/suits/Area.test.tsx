@@ -393,10 +393,8 @@ describe('test ValidatorProvider', () => {
     });
 
     it('should indicate dirty when input changed', async () => {
-        jest.useFakeTimers();
-
         const area = mount(
-            <ValidatorArea rules="long_wait">
+            <ValidatorArea>
                 {({dirty}) => (
                     <>
                         <input name="test" value=""/>
@@ -407,6 +405,23 @@ describe('test ValidatorProvider', () => {
         );
 
         area.find('input').at(0).simulate('change', { target: { value: 'a' } });
+        await tick();
+        expect(area.find('div').text()).toBe('yes')
+    });
+
+    it('should indicate touched when input blurred', async () => {
+        const area = mount(
+            <ValidatorArea rules="long_wait">
+                {({touched}) => (
+                    <>
+                        <input name="test" value=""/>
+                        <div>{touched ? 'yes' : 'no'}</div>
+                    </>
+                )}
+            </ValidatorArea>
+        );
+
+        area.find('input').at(0).simulate('blur');
         expect(area.find('div').text()).toBe('yes')
     });
 })
