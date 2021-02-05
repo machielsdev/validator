@@ -142,24 +142,4 @@ describe('test ValidatorProvider', () => {
         await tick();
         expect(mockFn).toHaveBeenCalled()
     });
-
-    it('should indicate whether the area is dirty', async () => {
-        const provider = mount<ValidatorProvider, ValidatorProviderProps>(
-            <ValidatorProvider>
-                {({ dirty }) => (
-                    <>
-                        <ValidatorArea name="test1" rules="required">
-                            <input value="1" />
-                        </ValidatorArea>
-                        <div>{dirty ? 'yes' : 'no'}</div>
-                    </>
-                )}
-            </ValidatorProvider>
-        );
-
-        provider.find('input').at(0).simulate('blur');
-        await tick();
-        expect(provider.find('div').text()).toBe('no');
-
-    })
 })
