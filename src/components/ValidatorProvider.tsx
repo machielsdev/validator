@@ -7,6 +7,7 @@ import { ValidatorArea } from '@/components/ValidatorArea';
 
 export interface ValidatorProviderProps {
     rules?: RuleOptions;
+    errors?: Messages;
     children?: React.ReactNode | ((scope: ProviderScope) => React.ReactNode);
 }
 
@@ -21,6 +22,13 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
         areas: {},
         errors: {},
         valid: false
+    }
+
+    public componentDidUpdate(
+        prevProps: Readonly<ValidatorProviderProps>,
+        prevState: Readonly<ValidatorProviderState>
+    ): void {
+        if () {}
     }
 
     /**
