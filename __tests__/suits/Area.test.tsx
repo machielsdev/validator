@@ -357,7 +357,7 @@ describe('test ValidatorProvider', () => {
             <ValidatorArea rules="required">
                 {({valid}) => (
                     <>
-                        <input name="test" value=""/>
+                        <input name="test" value="test" />
                         <div>{valid ? 'yes' : 'no'}</div>
                     </>
                 )}
@@ -366,7 +366,7 @@ describe('test ValidatorProvider', () => {
 
         area.find('input').at(0).simulate('blur');
         await tick();
-        expect(area.find('div').text()).toBe('no');
+        expect(area.find('div').text()).toBe('yes');
     });
 
     it('should indicate pending while validation is ongoing', async () => {
@@ -411,7 +411,7 @@ describe('test ValidatorProvider', () => {
 
     it('should indicate touched when input blurred', async () => {
         const area = mount(
-            <ValidatorArea rules="long_wait">
+            <ValidatorArea rules="required">
                 {({touched}) => (
                     <>
                         <input name="test" value=""/>
