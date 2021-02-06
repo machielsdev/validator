@@ -142,4 +142,44 @@ describe('test ValidatorProvider', () => {
         await tick();
         expect(mockFn).toHaveBeenCalled()
     });
+
+    it('should set errors in areas from props and change over time', () => {
+        const provider = mount<ValidatorProvider, ValidatorProviderProps>(
+            <ValidatorProvider errors={{ test: ['test error']}}>
+                <ValidatorArea name="test">
+                    <input value="" />
+                </ValidatorArea>
+            </ValidatorProvider>
+        );
+
+        expect(provider.find(ValidatorArea).state().errors.length).toBe(1);
+        provider.setProps({ errors: { test: ['test error 2'] } });
+        expect(provider.find(ValidatorArea).state().errors.length).toBe(2);
+    });
+
+    it('should set errors in areas from props', () => {
+        const provider = mount<ValidatorProvider, ValidatorProviderProps>(
+            <ValidatorProvider>
+                <ValidatorArea name="test">
+                    <input value="" />
+                </ValidatorArea>
+            </ValidatorProvider>
+        );
+
+        provider.setProps({ errors: { test: ['test error 2'] } });
+        expect(provider.find(ValidatorArea).state().errors.length).toBe(1);
+    });
+
+    it('should ignore errors where no area is for', () => {
+        const provider = mount<ValidatorProvider, ValidatorProviderProps>(
+            <ValidatorProvider>
+                <ValidatorArea name="test">
+                    <input value="" />
+                </ValidatorArea>
+            </ValidatorProvider>
+        );
+
+        provider.setProps({ errors: { not_existing: ['test error 2'] } });
+        expect(provider.find(ValidatorArea).state().errors.length).toBe(0);
+    });
 })

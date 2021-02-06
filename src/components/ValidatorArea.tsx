@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { isFragment } from 'react-is';
+import { isEqual } from 'lodash';
 import { RuleOptions } from '@/RuleOptions';
 import { AreaScope } from '@/AreaScope';
 import { ValidatorContext } from '@/ValidatorContext';
@@ -8,6 +9,7 @@ import { Validator } from '@/Validator';
 export interface ValidatorAreaProps {
     rules?: RuleOptions;
     name?: string;
+    errors?: string[];
     children: React.ReactNode | ((scope: AreaScope) => React.ReactNode);
     validationName?: string;
 }
@@ -63,6 +65,15 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
         rules: []
     }
 
+    public constructor(props: ValidatorAreaProps) {
+        super(props);
+
+        if (props.errors) {
+            this.state.errors = props.errors;
+            this.state.valid = false;
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -70,6 +81,26 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
         const { addArea } = this.context;
 
         addArea(this.getName(), this);
+    }
+
+    public componentDidUpdate(prevProps: Readonly<ValidatorAreaProps>): void {
+        if (this.props.errors && this.props.errors.length) {
+            if (!prevProps.errors) {
+                this.setErrorsFromProps(this.props.errors);
+            } else if (prevProps.errors.length && !isEqual(prevProps.errors, this.props.errors)) {
+                this.setErrorsFromProps(this.props.errors);
+            }
+        }
+    }
+
+    /**
+     * Sets the errors given via props in the indicated area
+     */
+    private setErrorsFromProps(errors: string[]): void {
+        this.setState((prevState: ValidatorAreaState) => ({
+            errors: [...prevState.errors, ...errors],
+            valid: false
+        }));
     }
 
     /**
@@ -125,6 +156,21 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
         })
     }
 
+    /**
+     * Adds errors to the currently existing errors in state
+     */
+    public addErrors(errors: string[]): void {
+        this.setState((prevState: ValidatorAreaState) => ({
+            ...prevState,
+            errors: [...prevState.errors, ...errors],
+            valid: false,
+
+        }));
+    }
+
+    /**
+     * Gets the name of the area
+     */
     private getName(): string {
         if (this.inputRefs.length === 1 && this.inputRefs[0].getAttribute('name')) {
             return this.inputRefs[0].getAttribute('name') as string;
