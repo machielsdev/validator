@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isEqual } from 'lodash';
 import { Messages } from '@/Messages';
 import { RuleOptions } from '@/RuleOptions';
 import { ProviderScope } from '@/ProviderScope';
@@ -7,18 +8,66 @@ import { ValidatorArea } from '@/components/ValidatorArea';
 
 export interface ValidatorProviderProps {
     rules?: RuleOptions;
+    errors?: Messages;
     children?: React.ReactNode | ((scope: ProviderScope) => React.ReactNode);
 }
 
 interface ValidatorProviderState {
     areas: Record<string, ValidatorArea>;
-    errors: Messages
+    errors: Messages;
+    valid: boolean;
 }
 
 export class ValidatorProvider extends React.Component<ValidatorProviderProps, ValidatorProviderState> {
     public readonly state: ValidatorProviderState = {
         areas: {},
-        errors: {}
+        errors: {},
+        valid: false
+    }
+
+    public constructor(props: ValidatorProviderProps) {
+        super(props);
+
+        if (props.errors) {
+            this.state.errors = props.errors;
+        }
+    }
+
+    public componentDidUpdate(
+        prevProps: Readonly<ValidatorProviderProps>
+    ) {
+        if (this.props.errors && Object.keys(this.props.errors).length) {
+            if (!prevProps.errors || !Object.keys(prevProps.errors).length) {
+                this.setErrorsFromProps(this.props.errors);
+            } else if (Object.keys(prevProps.errors).length
+                && Object.keys(this.props.errors).length
+                && !isEqual(prevProps.errors, this.props.errors)
+            ) {
+                this.setErrorsFromProps(this.props.errors);
+            }
+        }
+    }
+
+    /**
+     * Indicates whether an area exists with the given name
+     */
+    private hasArea(name: string): boolean {
+        return !!Object.prototype.hasOwnProperty.call(this.state.areas, name);
+    }
+
+    /**
+     * Sets the errors given via props in the indicated area
+     */
+    private setErrorsFromProps(errors: Messages): void {
+        Object.keys(errors).forEach((key: string) => {
+            if (this.hasArea(key)) {
+                this.state.areas[key].addErrors(errors[key]);
+            }
+        })
+    }
+
+    private hasErrorsForArea(name: string): boolean {
+        return !!Object.prototype.hasOwnProperty.call(this.state.errors, name);
     }
 
     /**
@@ -28,6 +77,10 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
         this.setState((prevState) => {
             if (Object.prototype.hasOwnProperty.call(prevState.areas, name)) {
                 throw new Error('Validation area names should be unique');
+            }
+
+            if (this.hasErrorsForArea(name)) {
+                ref.addErrors(this.state.errors[name]);
             }
 
             return {
@@ -45,13 +98,21 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
     private async validate(onValidated?: () => void): Promise<void> {
         const { areas } = this.state;
 
-        const dirtyAreas = (await Promise.all(Object.values(areas)
-            .map((area) => area.validate())
-        )).filter((clean) => !clean);
+        this.setState({
+            valid: false
+        }, async (): Promise<void> => {
+            const invalidAreas = (await Promise.all(Object.values(areas)
+                .map((area) => area.validate())
+            )).filter((valid: boolean) => !valid);
 
-        if (!dirtyAreas.length && onValidated) {
-            onValidated();
-        }
+            if (!invalidAreas.length && onValidated) {
+                onValidated();
+            } else {
+                this.setState({
+                    valid: true
+                })
+            }
+        });
     }
 
     /**
@@ -59,7 +120,8 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
      */
     private getScopedProperties(): ProviderScope {
         return {
-            validate: (onValidated?: () => void): Promise<void> => this.validate(onValidated)
+            validate: (onValidated?: () => void): Promise<void> => this.validate(onValidated),
+            valid: this.state.valid
         };
     }
 
