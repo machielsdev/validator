@@ -1,6 +1,7 @@
 {
     "name": "@coderan/validator",
     "version": "2.1.0",
+    "main": "dist/index.js",
     "dependencies": {
         "@formatjs/intl": "^1.6.5",
         "@testing-library/jest-dom": "^4.2.4",
