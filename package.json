@@ -6,6 +6,7 @@
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.5.0",
         "@testing-library/user-event": "^7.2.1",
+        "lodash": "^4.17.20",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-is": "^16.13.1"
@@ -46,6 +47,7 @@
         "@types/enzyme": "^3.10.8",
         "@types/enzyme-adapter-react-16": "^1.0.6",
         "@types/jest": "^26.0.20",
+        "@types/lodash": "^4.14.168",
         "@types/react": "^16.14.2",
         "@types/react-is": "^16.7.2",
         "@typescript-eslint/eslint-plugin": "^3.10.1",

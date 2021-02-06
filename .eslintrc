@@ -23,6 +23,7 @@
         "import/no-dynamic-require": "off",
         "global-require": "off",
         "quotes": ["error", "single", { "allowTemplateLiterals": true }],
-        "@typescript-eslint/indent": ["error", 4]
+        "@typescript-eslint/indent": ["error", 4],
+        "@typescript-eslint/no-non-null-assertion": ["off"]
     }
 }

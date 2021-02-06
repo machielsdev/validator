@@ -425,4 +425,27 @@ describe('test ValidatorProvider', () => {
         await tick();
         expect(area.find('div').text()).toBe('yes')
     });
+
+    it('should set errors in areas from props and change over time', () => {
+        const area = mount<ValidatorArea, ValidatorAreaProps>(
+            <ValidatorArea name="test" errors={['test error']}>
+                <input value="" />
+            </ValidatorArea>
+        );
+
+        expect(area.state().errors.length).toBe(1);
+        area.setProps({ errors: ['test error 2']});
+        expect(area.state().errors.length).toBe(2);
+    });
+
+    it('should set errors from props', () => {
+        const area = mount<ValidatorArea, ValidatorAreaProps>(
+            <ValidatorArea name="test">
+                <input value="" />
+            </ValidatorArea>
+        );
+
+        area.setProps({ errors: ['test error'] });
+        expect(area.state().errors.length).toBe(1);
+    });
 })
