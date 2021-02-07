@@ -1,7 +1,8 @@
 import {
     isCheckboxElement,
-    isRadioElement, nodeListToArray
-} from '@/common/dom';
+    isRadioElement,
+    nodeListToArray
+} from '../common/dom';
 
 
 export default {

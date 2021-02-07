@@ -5,9 +5,9 @@ import {
     isOutputElement,
     isProgressElement,
     isSelectElement
-} from '@/common/dom';
-import { isNumeric } from '@/common/utils';
-import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
+} from '../common/dom';
+import { isNumeric } from '../common/utils';
+import { IncorrectArgumentTypeError } from './IncorrectArgumentTypeError';
 
 export default {
     passed(elements: HTMLElement[], min: string): boolean {

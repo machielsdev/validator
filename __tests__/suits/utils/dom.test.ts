@@ -1,4 +1,9 @@
-import { getValue, htmlCollectionToArray, isInputElement, isSelectElement } from '@/common/dom';
+import {
+    getValue,
+    htmlCollectionToArray,
+    isInputElement,
+    isSelectElement
+} from '../../../src/common/dom';
 
 describe('dom helpers test', () => {
     it('should convert HtmlCollection to array', () => {
