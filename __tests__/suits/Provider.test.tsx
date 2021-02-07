@@ -1,8 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Validator } from '@/Validator';
-import ValidatorProvider, { ValidatorProviderProps } from '@/components/ValidatorProvider';
-import { ValidatorArea } from '@/components/ValidatorArea';
+import {
+    Validator,
+    ValidatorProvider,
+    ValidatorProviderProps,
+    ValidatorArea
+} from '../../src';
 import tick from '../common/tick';
 
 describe('test ValidatorProvider', () => {

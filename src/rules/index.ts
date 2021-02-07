@@ -1,6 +1,7 @@
-export { default as min } from '@/rules/min';
-export { default as max } from '@/rules/max';
-export { default as required } from '@/rules/required';
-export { default as activeUrl } from '@/rules/activeUrl';
-export { default as regex } from '@/rules/regex';
-export { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
+export { default as min } from './min';
+export { default as max } from './max';
+export { default as required } from './required';
+export { default as activeUrl } from './activeUrl';
+export { default as regex } from './regex';
+export { default as checked } from './checked';
+export { IncorrectArgumentTypeError } from './IncorrectArgumentTypeError';

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { isFragment } from 'react-is';
 import { isEqual } from 'lodash';
-import { RuleOptions } from '@/RuleOptions';
-import { AreaScope } from '@/AreaScope';
-import { ValidatorContext } from '@/ValidatorContext';
-import { Validator } from '@/Validator';
+import { RuleOptions } from '../RuleOptions';
+import { AreaScope } from '../AreaScope';
+import { ValidatorContext } from '../ValidatorContext';
+import { Validator } from '../Validator';
 
 export interface ValidatorAreaProps {
     rules?: RuleOptions;
@@ -18,7 +18,7 @@ export interface ValidatorAreaPropsWithDefault extends ValidatorAreaProps {
     rules: RuleOptions;
 }
 
-interface ValidatorAreaState {
+export interface ValidatorAreaState {
     errors: string[];
     valid: boolean;
     pending: boolean;
@@ -52,7 +52,7 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
      */
     public readonly state: ValidatorAreaState = {
         errors: [],
-        valid: false,
+        valid: true,
         pending: false,
         dirty: false,
         touched: false
@@ -109,7 +109,7 @@ export class ValidatorArea extends React.Component<ValidatorAreaProps, Validator
     public validate(ref?: HTMLElement): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             this.setState(() => ({
-                valid: false,
+                valid: true,
                 errors: [],
                 pending: true
             }), () => {

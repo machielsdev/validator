@@ -1,5 +1,4 @@
-import { Rule } from '@/Rule';
-import { Validator } from '@/Validator';
+import { Validator, Rule } from '../../src';
 
 describe('test validator', () => {
     beforeEach(() => {

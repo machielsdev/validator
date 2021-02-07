@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { isEqual } from 'lodash';
-import { Messages } from '@/Messages';
-import { RuleOptions } from '@/RuleOptions';
-import { ProviderScope } from '@/ProviderScope';
-import { ValidatorContext } from '@/ValidatorContext';
-import { ValidatorArea } from '@/components/ValidatorArea';
+import { Messages } from '../Messages';
+import { RuleOptions } from '../RuleOptions';
+import { ProviderScope } from '../ProviderScope';
+import { ValidatorContext } from '../ValidatorContext';
+import { ValidatorArea } from './ValidatorArea';
 
 export interface ValidatorProviderProps {
     rules?: RuleOptions;
@@ -12,7 +12,7 @@ export interface ValidatorProviderProps {
     children?: React.ReactNode | ((scope: ProviderScope) => React.ReactNode);
 }
 
-interface ValidatorProviderState {
+export interface ValidatorProviderState {
     areas: Record<string, ValidatorArea>;
     errors: Messages;
     valid: boolean;
@@ -22,7 +22,7 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
     public readonly state: ValidatorProviderState = {
         areas: {},
         errors: {},
-        valid: false
+        valid: true
     }
 
     public constructor(props: ValidatorProviderProps) {
@@ -99,7 +99,7 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
         const { areas } = this.state;
 
         this.setState({
-            valid: false
+            valid: true
         }, async (): Promise<void> => {
             const invalidAreas = (await Promise.all(Object.values(areas)
                 .map((area) => area.validate())
@@ -109,7 +109,7 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
                 onValidated();
             } else {
                 this.setState({
-                    valid: true
+                    valid: false
                 })
             }
         });

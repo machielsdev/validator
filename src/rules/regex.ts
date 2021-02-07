@@ -1,4 +1,4 @@
-import { isInputElement, isSelectElement, getValue } from '@/common/dom';
+import { isInputElement, isSelectElement, getValue } from '../common/dom';
 
 
 export default {

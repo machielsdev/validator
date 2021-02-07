@@ -4,12 +4,12 @@ import {
     IntlCache,
     IntlShape
 } from '@formatjs/intl'
-import { Rule, RuleFunction, RuleObject } from '@/Rule';
-import { RuleOptions } from '@/RuleOptions';
-import { capitalize } from '@/common/utils';
-import { ValidatorArea } from '@/components/ValidatorArea';
+import { Rule, RuleFunction, RuleObject } from './Rule';
+import { RuleOptions } from './RuleOptions';
+import { capitalize } from './common/utils';
+import { ValidatorArea } from './components/ValidatorArea';
 import required from './rules/required';
-import { getValue, isCanvasElement } from '@/common/dom';
+import { getValue, isCanvasElement } from './common/dom';
 
 export class Validator {
     public static VALIDATABLE_ELEMENTS: string[] = [
