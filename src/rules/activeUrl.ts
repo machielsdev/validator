@@ -1,4 +1,4 @@
-import { getValue, isInputElement, isSelectElement } from '@/common/dom';
+import { getValue, isInputElement, isSelectElement } from '../common/dom';
 
 export default {
     async passed(elements: HTMLElement[]): Promise<boolean> {

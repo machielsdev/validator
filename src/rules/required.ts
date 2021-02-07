@@ -5,7 +5,7 @@ import {
     isOutputElement,
     isProgressElement,
     isSelectElement
-} from '@/common/dom';
+} from '../common/dom';
 
 export default {
     passed(elements: HTMLElement[]): boolean {

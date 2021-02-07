@@ -29,11 +29,7 @@
         "skipLibCheck": true,
         "esModuleInterop": true,
         "strict": true,
-        "isolatedModules": true,
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"]
-        }
+        "isolatedModules": true
     },
     "include": [
         "src/**/*.ts",

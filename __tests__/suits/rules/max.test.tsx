@@ -1,10 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import max from '@/rules/max';
-import { Validator } from '@/Validator';
-import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
+import {
+    Validator,
+    ValidatorArea,
+    ValidatorAreaProps,
+    IncorrectArgumentTypeError,
+    max
+} from '../../../src';
 import tick from '../../common/tick';
-import { IncorrectArgumentTypeError } from '@/rules';
 
 describe('test max rule', () => {
     beforeEach(() => {

@@ -1,8 +1,11 @@
-import { Validator } from '@/Validator';
 import { mount } from 'enzyme';
-import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
 import React from 'react';
-import regex from '@/rules/regex';
+import {
+    Validator,
+    ValidatorArea,
+    ValidatorAreaProps,
+    regex
+} from '../../../src';
 import tick from '../../common/tick';
 
 describe('test regex rule', () => {

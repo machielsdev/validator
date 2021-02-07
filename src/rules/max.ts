@@ -1,5 +1,5 @@
-import { isNumeric } from '@/common/utils';
-import { IncorrectArgumentTypeError } from '@/rules/IncorrectArgumentTypeError';
+import { isNumeric } from '../common/utils';
+import { IncorrectArgumentTypeError } from './IncorrectArgumentTypeError';
 import {
     getValue,
     isInputElement,
@@ -7,7 +7,7 @@ import {
     isOutputElement,
     isProgressElement,
     isSelectElement
-} from '@/common/dom';
+} from '../common/dom';
 
 export default {
     passed(elements: HTMLElement[], max: string): boolean {

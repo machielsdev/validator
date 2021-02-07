@@ -1,10 +1,13 @@
-import min from '@/rules/min';
-import { Validator } from '@/Validator';
-import { mount } from 'enzyme';
-import { ValidatorArea, ValidatorAreaProps } from '@/components/ValidatorArea';
 import React from 'react';
+import { mount } from 'enzyme';
+import {
+    min,
+    Validator,
+    ValidatorArea,
+    IncorrectArgumentTypeError,
+    ValidatorAreaProps
+} from '../../../src';
 import tick from '../../common/tick';
-import { IncorrectArgumentTypeError } from '@/rules';
 
 describe('test min rule', () => {
     beforeEach(() => {

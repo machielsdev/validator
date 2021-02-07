@@ -1,8 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import required from '@/rules/required';
-import { ValidatorAreaProps, ValidatorArea } from '@/components/ValidatorArea';
-import { Validator } from '@/Validator';
+import {
+    required,
+    ValidatorAreaProps,
+    ValidatorArea,
+    Validator
+} from '../../../src';
 import tick from '../../common/tick';
 
 describe('test required rule', () => {

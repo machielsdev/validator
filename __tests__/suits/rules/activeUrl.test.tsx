@@ -1,5 +1,7 @@
-import { Validator } from '@/Validator';
-import activeUrl from '@/rules/activeUrl';
+import {
+    Validator,
+    activeUrl
+} from '../../../src';
 import fetchMock from 'jest-fetch-mock';
 
 describe('test activeUrl rule', () => {

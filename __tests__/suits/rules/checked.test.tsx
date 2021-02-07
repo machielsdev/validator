@@ -1,5 +1,7 @@
-import { Validator } from '@/Validator';
-import checked from '@/rules/checked';
+import {
+    Validator,
+    checked
+} from '../../../src';
 
 describe('test checked rule', (): void => {
     beforeEach((): void => {
