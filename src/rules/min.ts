@@ -34,6 +34,6 @@ export default {
         })
     },
     message(): string {
-        return `{name} should be at least {0}`
+        return 'min';
     }
 };

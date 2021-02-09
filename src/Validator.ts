@@ -3,13 +3,15 @@ import {
     createIntlCache,
     IntlCache,
     IntlShape
-} from '@formatjs/intl'
+} from '@formatjs/intl';
 import { Rule, RuleFunction, RuleObject } from './Rule';
 import { RuleOptions } from './RuleOptions';
-import { capitalize } from './common/utils';
 import { ValidatorArea } from './components/ValidatorArea';
 import required from './rules/required';
 import { getValue, isCanvasElement } from './common/dom';
+import { LocaleMessagesMap } from './LocaleMessages';
+import { capitalize } from './common/utils';
+import en from './locale/en';
 
 export class Validator {
     public static VALIDATABLE_ELEMENTS: string[] = [
@@ -63,6 +65,16 @@ export class Validator {
      */
     private validationName?: string;
 
+    /**
+     * The active locale
+     */
+    private static locale = 'en';
+
+    /**
+     * Map with messages keyed with locales, containing EN as default
+     */
+    private static messages: LocaleMessagesMap = en;
+
     public constructor(
         elements: HTMLElement[],
         rules: RuleOptions,
@@ -83,7 +95,8 @@ export class Validator {
      */
     private createIntl(): IntlShape<string> {
         return createIntl({
-            locale: 'en'
+            locale: Validator.locale,
+            messages: Validator.messages[Validator.locale]
         }, this.intlCache);
     }
 
@@ -251,5 +264,36 @@ export class Validator {
      */
     public static ruleExists(name: string): boolean {
         return Object.prototype.hasOwnProperty.call(Validator.rules, name);
+    }
+
+    public static hasLocale(locale: string): boolean {
+        return !!Object.prototype.hasOwnProperty.call(Validator.messages, locale);
+    }
+
+    /**
+     * Adds a locale map to the messages map, keyed by locale
+     */
+    public static addLocale(messages: LocaleMessagesMap): void {
+        Validator.messages = {
+            ...Validator.messages,
+            ...messages
+        };
+    }
+
+    /**
+     * Sets the given locale for all the new created validator instance or defaults to English if the locale does not
+     * exist
+     */
+    public static setLocale(locale: string, messages?: LocaleMessagesMap): void {
+        if (!messages) {
+            if (Validator.hasLocale(locale)) {
+                Validator.locale = locale;
+            } else {
+                Validator.locale = 'en';
+            }
+        } else {
+            Validator.addLocale(messages);
+            Validator.setLocale(locale);
+        }
     }
 }

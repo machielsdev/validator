@@ -16,6 +16,6 @@ export default {
         })
     },
     message(): string {
-        return '{name} heeft een ongeldig formaat';
+        return 'regex';
     }
 }

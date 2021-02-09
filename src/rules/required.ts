@@ -27,6 +27,6 @@ export default {
     },
 
     message(): string {
-        return `{name} is required`;
+        return 'required';
     }
 };

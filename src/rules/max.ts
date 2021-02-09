@@ -34,6 +34,6 @@ export default {
         })
     },
     message(): string {
-        return `{name} should be not greater than {0}`
+        return 'max';
     }
 };
