@@ -9,7 +9,8 @@ const nl: LocaleMessagesMap = {
         regex: '{name} heeft geen geldig formaat',
         required: '{name} is verplicht',
         length: '{name} moet {0} karakters lang zijn',
-        minLength: '{name} moet minstens {0} karakters lang zijn'
+        minLength: '{name} moet minstens {0} karakters lang zijn',
+        maxLength: '{name} mag maximaal {0} karakters lang zijn',
     }
 }
 

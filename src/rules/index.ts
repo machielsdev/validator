@@ -5,5 +5,6 @@ export { default as activeUrl } from './activeUrl';
 export { default as regex } from './regex';
 export { default as checked } from './checked';
 export { default as minLength } from './minLength';
+export { default as maxLength } from './maxLength';
 export { default as length } from './length';
 export { IncorrectArgumentTypeError } from './IncorrectArgumentTypeError';

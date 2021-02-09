@@ -9,7 +9,8 @@ const en: LocaleMessagesMap = {
         regex: '{name} doesn\'t have a valid format',
         required: '{name} is required',
         length: '{name} should be {0} characters',
-        minLength: '{name} should have at least {0} characters'
+        minLength: '{name} should have at least {0} characters',
+        maxLength: '{name} shouldn\'t be more than {0} characters'
     }
 }
 
