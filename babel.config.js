@@ -8,7 +8,7 @@ module.exports = {
             targets: {
                 esmodules: true,
             },
-        },],
+        }],
         '@babel/react',
     ],
 };
