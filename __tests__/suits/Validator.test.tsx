@@ -149,5 +149,23 @@ describe('test validator', () => {
         await validator.validate();
 
         expect(validator.getErrors()[0]).toBe('Value is false negative required');
-    })
+    });
+
+    it('should change locale if it exists', () => {
+        const messages = {
+            test: {
+                foo: 'bar'
+            }
+        };
+
+        Validator.setLocale('test', messages);
+
+        expect(Validator.getLocale()).toBe('test');
+    });
+
+    it('should default to en if changing to an non-existing locale', () => {
+        Validator.setLocale('not_existing');
+
+        expect(Validator.getLocale()).toBe('en');
+    });
 });

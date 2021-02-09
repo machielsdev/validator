@@ -296,4 +296,11 @@ export class Validator {
             Validator.setLocale(locale);
         }
     }
+
+    /**
+     * Gets the current locale of the validator
+     */
+    public static getLocale(): string {
+        return Validator.locale;
+    }
 }
