@@ -25,6 +25,7 @@ describe('test max rule', () => {
         meter.value = 6;
         meter.max = 10;
         progress.value = 6;
+        progress.max = 10;
 
         const validator_input = new Validator([
             input
