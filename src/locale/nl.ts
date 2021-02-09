@@ -1,5 +1,7 @@
-export default {
-    'nl-NL': {
+import { LocaleMessagesMap } from '../LocaleMessages';
+
+const nl: LocaleMessagesMap = {
+    nl: {
         activeUrl: '{} is geen actieve URL',
         checked: '{name} is niet aangevinkt.',
         max: '{name} max niet meer zijn dan {0}',
@@ -8,4 +10,6 @@ export default {
         required: '{name} is verplicht'
     }
 }
+
+export default nl;
 
