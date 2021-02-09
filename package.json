@@ -61,7 +61,7 @@
         "jest-fetch-mock": "^3.0.3",
         "react-scripts": "^3.4.4",
         "react-test-renderer": "^16.14.0",
-        "ts-loader": "^8.0.14",
+        "ts-loader": "^8.0.16",
         "typescript": "^3.9.7",
         "webpack-cli": "^3.3.12"
     },
