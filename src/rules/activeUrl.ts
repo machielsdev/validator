@@ -29,6 +29,6 @@ export default {
             .length;
     },
     message(): string {
-        return 'Not an active url'
+        return 'activeUrl';
     }
 }

@@ -28,6 +28,6 @@ export default {
         })
     },
     message(): string {
-        return '{name} is not checked.';
+        return 'checked';
     }
 };
