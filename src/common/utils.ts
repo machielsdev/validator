@@ -12,7 +12,30 @@ const isNumeric = (value: string): boolean => {
     return !isNaN(+value);
 }
 
+const arraysEqual = (first: any[], second: any[]): boolean => {
+    if (first.length !== second.length) {
+        return false;
+    }
+
+    let i = first.length;
+
+    while (i--) {
+        const indexInSecond = second.findIndex((entry: any) => entry === first[i]);
+
+        if (indexInSecond !== -1) {
+            second.splice(indexInSecond, 1);
+        } else {
+            return false;
+        }
+
+        first.splice(i, 1);
+    }
+
+    return first.length === 0 && second.length === 0;
+}
+
 export {
     capitalize,
-    isNumeric
+    isNumeric,
+    arraysEqual
 }
