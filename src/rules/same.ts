@@ -3,8 +3,9 @@ import {
 } from '../common/dom';
 import { Validator } from '../Validator';
 import { arraysEqual } from '../common/utils';
+import { RuleObject } from '../Rule';
 
-export default(validator: Validator)  => ({
+export default(validator: Validator): RuleObject => ({
     passed(elements: HTMLElement[], name: string): boolean {
         const values = elements.reduce((prev: string[], element: HTMLElement) => ([
             ...prev,
@@ -18,7 +19,12 @@ export default(validator: Validator)  => ({
 
         return arraysEqual(values, otherValues);
     },
+    messageArgs(): string[] {
+        return [
+            'fooo'
+        ];
+    },
     message(): string {
-        return 'minLength';
+        return 'same';
     }
 });

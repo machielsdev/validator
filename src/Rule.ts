@@ -17,6 +17,10 @@ export type RuleObject = {
      * Message shown when the rule doesn't pass
      */
     message(): string;
+    /**
+     * Array of strings to replace the rule args
+     */
+    messageArgs?(): string[];
 }
 
 export type Rule = RuleObject | RuleFunction;

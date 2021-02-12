@@ -58,7 +58,7 @@ export class Validator {
     /**
      * Validator area used to access other areas and the provider
      */
-    private area?: ValidatorArea;
+    private _area?: ValidatorArea;
 
     /**
      * Name used to overwrite name attribute, to allow messages to be more specific
@@ -151,6 +151,17 @@ export class Validator {
         return [name, parameters.split(',')];
     }
 
+    private static parseArgs(rule: RuleObject, args: string[]): string[] {
+        if (rule.messageArgs) {
+            return [
+                ...rule.messageArgs(),
+                ...args.slice(rule.messageArgs().length, args.length - 1)
+            ];
+        }
+
+        return args;
+    }
+
     /**
      * Validate a specific rule
      */
@@ -165,7 +176,10 @@ export class Validator {
             const passed = await ruleObj.passed(this.elements, ...ruleParameters);
 
             if(!passed) {
-                this.errors.push(this.localize(ruleObj.message(), ...ruleParameters));
+                this.errors.push(this.localize(
+                    ruleObj.message(),
+                    Validator.parseArgs(ruleObj, ruleParameters)
+                ));
                 return false;
             }
 
@@ -192,7 +206,7 @@ export class Validator {
     /*
      * Get the capitalized, localized message
      */
-    public localize(message: string, ...ruleArgs: string[]): string {
+    public localize(message: string, ruleArgs: string[]): string {
         return capitalize(this.intl.formatMessage({
             id: message,
             defaultMessage: message
@@ -213,7 +227,7 @@ export class Validator {
      * Sets the current area
      */
     public setArea(area: ValidatorArea): Validator {
-        this.area = area;
+        this._area = area;
 
         return this;
     }
@@ -222,8 +236,8 @@ export class Validator {
      * Gets the area where this validator instance is used
      */
     public getArea(): ValidatorArea {
-        if (this.area) {
-            return this.area;
+        if (this._area) {
+            return this._area;
         }
 
         throw new Error('Areas are only available when validating React components.');
@@ -234,6 +248,10 @@ export class Validator {
      */
     public refs(name?: string, type?: typeof HTMLElement): HTMLElement[] {
         return this.getArea().context.getRefs(name, type);
+    }
+
+    public area(name: string): ValidatorArea | undefined {
+        return this.getArea().context.getArea(name);
     }
 
     /**

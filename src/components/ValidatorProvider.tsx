@@ -55,6 +55,14 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
         return !!Object.prototype.hasOwnProperty.call(this.state.areas, name);
     }
 
+    protected getArea(name: string): ValidatorArea | undefined {
+        if (!this.hasArea(name)) {
+            return undefined;
+        }
+
+        return this.state.areas[name];
+    }
+
     /**
      * Sets the errors given via props in the indicated area
      */
@@ -95,7 +103,7 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
     /**
      * Validate all areas within this provider
      */
-    private async validate(onValidated?: () => void): Promise<void> {
+    public async validate(onValidated?: () => void): Promise<void> {
         const { areas } = this.state;
 
         this.setState({
@@ -105,8 +113,10 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
                 .map((area) => area.validate())
             )).filter((valid: boolean) => !valid);
 
-            if (!invalidAreas.length && onValidated) {
-                onValidated();
+            if (!invalidAreas.length) {
+                if (onValidated) {
+                    onValidated();
+                }
             } else {
                 this.setState({
                     valid: false
@@ -173,7 +183,8 @@ export class ValidatorProvider extends React.Component<ValidatorProviderProps, V
                 value={{
                     rules: rules || [],
                     addArea: (name: string, ref: ValidatorArea): void => this.addArea(name, ref),
-                    getRefs: (name?: string, type?: typeof HTMLElement) => this.getRefs(name, type)
+                    getRefs: (name?: string, type?: typeof HTMLElement) => this.getRefs(name, type),
+                    getArea: (name: string) => this.getArea(name)
                 }}
             >
                 {children}

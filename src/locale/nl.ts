@@ -11,6 +11,7 @@ const nl: LocaleMessagesMap = {
         length: '{name} moet {0} karakters lang zijn',
         minLength: '{name} moet minstens {0} karakters lang zijn',
         maxLength: '{name} mag maximaal {0} karakters lang zijn',
+        same: '{name} moet hetzelfde zijn als {0}'
     }
 }
 
