@@ -3,8 +3,8 @@
     "version": "2.1.2",
     "main": "dist/index.js",
     "dependencies": {
-        "@formatjs/intl": "^1.6.8",
         "lodash": "^4.17.21",
+        "@formatjs/intl": "^1.7.1",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-is": "^17.0.1"
