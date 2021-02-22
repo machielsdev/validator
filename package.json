@@ -4,7 +4,7 @@
     "main": "dist/index.js",
     "dependencies": {
         "@formatjs/intl": "^1.6.8",
-        "lodash": "^4.17.20",
+        "lodash": "^4.17.21",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-is": "^17.0.1"
