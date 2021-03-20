@@ -15,7 +15,12 @@
         "node": true,
         "es6": true
     },
-    "ignorePatterns": ["dist", "setupTests.ts", "babel.config.js"],
+    "ignorePatterns": [
+        "dist",
+        "setupTests.ts",
+        "babel.config.js",
+        "gulpfile.js"
+    ],
     "rules": {
         "comma-dangle": "off",
         "class-methods-use-this": "off",
