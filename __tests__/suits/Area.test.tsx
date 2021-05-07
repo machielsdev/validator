@@ -452,4 +452,30 @@ describe('test ValidatorProvider', () => {
         area.setProps({ errors: ['test error'] });
         expect(area.state().errors.length).toBe(1);
     });
+
+    it('should get other area', async () => {
+        Validator.extend('test_other_area', (validator: Validator) => ({
+            passed(): boolean {
+                return !!validator.area('other');
+            },
+            message(): string {
+                return 'test';
+            }
+        }))
+
+        const provider = mount<ValidatorProvider, ValidatorProviderProps>(
+            <ValidatorProvider rules="test_other_area">
+                <ValidatorArea>
+                    <input name="test" />
+                </ValidatorArea>
+                <ValidatorArea>
+                    <input name="other" />
+                </ValidatorArea>
+            </ValidatorProvider>
+        );
+
+        await provider.instance().validate();
+        await tick();
+        expect(provider.state().valid).toBeTruthy();
+    })
 })

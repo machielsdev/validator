@@ -6,10 +6,12 @@ export interface ValidatorContextProps {
     rules: RuleOptions;
     addArea: (name: string, ref: ValidatorArea) => void;
     getRefs: (name?: string, type?: typeof HTMLElement) => HTMLElement[];
+    getArea: (name: string) => ValidatorArea | undefined;
 }
 
 export const ValidatorContext = React.createContext<ValidatorContextProps>({
     rules: [],
     addArea: () => undefined,
-    getRefs: () => []
+    getRefs: () => [],
+    getArea: () => undefined
 });
